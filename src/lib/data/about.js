@@ -65,7 +65,7 @@ export const ABOUT_INTRO = {
   // Verify this file actually exists in /public before deploying — a
   // missing asset here fails silently (a plain anchor click, not a fetch
   // with error handling) and won't show up in a build or lint pass.
-  resumePath: "/adcomtechs_resume.pdf",
+  resumePath: "/alex_shedrach_uchenna_resume.pdf",
   resumeLabel: "Download résumé",
 };
 

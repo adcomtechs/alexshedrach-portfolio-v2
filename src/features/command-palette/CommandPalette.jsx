@@ -120,18 +120,33 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // Body scroll lock + autofocus — legitimate effect, external-system sync only.
-  useEffect(() => {
-    if (!isOpen) return;
+ // Body scroll lock + autofocus + Escape — one effect, one external-system sync.
+// Escape moved out of handleKeyDown deliberately: that handler only fires
+// for keydowns that bubble through the dialog subtree, which depends on
+// focus staying inside it. A stray mousedown on a non-focusable element
+// (e.g. the backdrop) blurs the input to <body> and silently breaks that
+// path. A window-level listener, gated on isOpen, closes regardless of
+// where focus currently sits — same reasoning as the Cmd+K listener above.
+useEffect(() => {
+  if (!isOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    inputRef.current?.focus();
+  const previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  inputRef.current?.focus();
 
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isOpen]);
+  function onKeyDown(e) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeCommandPalette();
+    }
+  }
+  window.addEventListener("keydown", onKeyDown);
+
+  return () => {
+    document.body.style.overflow = previousOverflow;
+    window.removeEventListener("keydown", onKeyDown);
+  };
+}, [isOpen]);
 
   function runCommand(command) {
     if (!command) return;
@@ -140,10 +155,7 @@ export function CommandPalette() {
   }
 
   function handleKeyDown(e) {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      closeCommandPalette();
-    } else if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown") {
       e.preventDefault();
       if (filtered.length === 0) return;
       setActiveIndex((safeActiveIndex + 1) % filtered.length);
@@ -168,12 +180,12 @@ export function CommandPalette() {
       }}
     >
       <div
-        aria-hidden="true"
-        className="absolute inset-0 animate-fade-in"
-        style={{
-          background: "color-mix(in srgb, var(--color-bg) 70%, transparent)",
-        }}
-      />
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-0 animate-fade-in"
+  style={{
+    background: "color-mix(in srgb, var(--color-bg) 70%, transparent)",
+  }}
+/>
 
       <div
         role="dialog"
