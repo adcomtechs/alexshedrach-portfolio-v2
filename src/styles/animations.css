@@ -1,0 +1,253 @@
+/* =========================
+   KEYFRAMES (top-level is OK)
+========================= */
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes dot-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes stripe-move {
+    to {
+        background-position: 22px 0;
+    }
+}
+
+@keyframes ticker-sweep {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes ticker-badge-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes progress-advance {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes hero-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes hero-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes status-pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.15;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes check-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* =========================
+   UTILITIES (REQUIRED LAYER)
+========================= */
+
+@layer utilities {
+
+    .animate-spin {
+        animation: spin 0.8s linear infinite;
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.4s ease forwards;
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-slide-down {
+        animation: slide-down 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-scale-in {
+        animation: scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-pulse-soft {
+        animation: dot-pulse 1.2s ease-in-out infinite;
+    }
+
+    .progress-running {
+        animation: progress-advance var(--slide-duration, 3s) linear forwards;
+    }
+
+    .hero-animate {
+        opacity: 0;
+        animation: hero-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .hero-animate-fade {
+        opacity: 0;
+        animation: hero-fade-in 0.5s ease forwards;
+    }
+
+    .panel-enter {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    .panel-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+            opacity 380ms ease,
+            transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .panel-exit {
+        opacity: 0;
+        transform: translateY(-14px);
+        transition:
+            opacity 280ms ease,
+            transform 280ms ease;
+    }
+
+    .status-pulse {
+        animation: status-pulse 2.4s ease-in-out infinite;
+    }
+
+         .animate-ticker-sweep {
+             animation: ticker-sweep var(--ticker-duration, 3500ms) linear forwards;
+         }
+    
+         .animate-ticker-badge-pulse {
+             animation: ticker-badge-pulse 2s ease-in-out infinite;
+         }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .panel-enter,
+    .panel-exit {
+        transform: none !important;
+    }
+
+    .hero-animate,
+    .hero-animate-fade {
+        opacity: 1;
+    }
+
+    .status-pulse {
+        animation: none;
+    }
+}

@@ -1,0 +1,333 @@
+/* styles/utilities.css */
+
+@layer utilities {
+
+
+    .text-display {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        line-height: var(--leading-tight);
+        letter-spacing: var(--tracking-tight);
+        font-weight: 700;
+    }
+
+    .text-heading-1 {
+        font-family: var(--font-display);
+        font-size: var(--text-3xl);
+        line-height: var(--leading-tight);
+        font-weight: 600;
+    }
+
+    .text-heading-2 {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        line-height: var(--leading-snug);
+        font-weight: 600;
+    }
+
+    .text-body-lg {
+        font-size: var(--text-lg);
+        line-height: var(--leading-relaxed);
+    }
+
+    .text-body {
+        font-size: var(--text-base);
+        line-height: var(--leading-normal);
+    }
+
+    .text-body-sm {
+        font-size: var(--text-sm);
+        line-height: var(--leading-normal);
+    }
+
+    .text-caption {
+        font-size: var(--text-xs);
+        line-height: var(--leading-snug);
+        color: var(--color-muted);
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    /* Text */
+    .text-muted {
+        color: var(--color-muted);
+    }
+
+    .text-faint {
+        color: var(--color-faint);
+    }
+
+    /* Surface */
+    .surface {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-sub);
+        border-radius: 12px;
+    }
+
+    /* Flex helpers */
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+/* ============================================================
+   PROSE TYPOGRAPHY SYSTEM
+   Applied to the container that receives dangerouslySetInnerHTML
+   from the remark/rehype pipeline in PostLayout.
+
+   Scope: all standard markdown-generated elements.
+   Token contract: every value references a CSS custom property
+   from themes.css or tokens.css — no hardcoded colors or sizes.
+
+   Intentionally outside @layer utilities so cascade specificity
+   behaves predictably relative to Tailwind's base layer. The
+   .prose selector carries sufficient specificity on its own.
+============================================================ */
+
+.prose {
+    color: var(--color-fg);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    /* Prevent long unbroken strings (URLs, tokens) from overflowing
+       the narrow container on small viewports */
+    overflow-wrap: break-word;
+}
+
+/* ── Vertical rhythm ─────────────────────────────────────── */
+/* Block elements receive consistent spacing via lobotomised owl.
+   The heading → paragraph sibling rule tightens that pair so they
+   read as a unit rather than independent blocks.                   */
+
+.prose>*+* {
+    margin-top: 1.5em;
+}
+
+.prose> :is(h2, h3, h4)+ :is(h2, h3, h4) {
+    margin-top: 1em;
+}
+
+/* ── Headings ────────────────────────────────────────────── */
+.prose h2,
+.prose h3,
+.prose h4 {
+    font-family: var(--font-display);
+    color: var(--color-fg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    /* Scroll offset prevents the sticky nav from obscuring the
+       heading when jumping to an anchor                             */
+    scroll-margin-top: 5rem;
+}
+
+.prose h2 {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    margin-top: 2.5em;
+    margin-bottom: 0.75em;
+}
+
+.prose h3 {
+    font-size: var(--text-xl);
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+}
+
+.prose h4 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* ── Heading anchor links ────────────────────────────────── */
+/* rehype-autolink-headings appends <a aria-hidden="true"><span> #</span></a>
+   to each heading. aria-hidden removes it from the accessibility tree.
+   Reveal on heading hover via CSS — no JS required.               */
+
+.prose :is(h2, h3, h4)>a[aria-hidden="true"] {
+    color: var(--color-faint);
+    text-decoration: none;
+    margin-left: 0.375em;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.prose :is(h2, h3, h4):hover>a[aria-hidden="true"] {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prose :is(h2, h3, h4)>a[aria-hidden="true"] {
+        transition: none;
+    }
+}
+
+/* ── Paragraphs ──────────────────────────────────────────── */
+.prose p {
+    color: var(--color-fg);
+    line-height: var(--leading-relaxed);
+    text-wrap: pretty;
+}
+
+/* Lead paragraph — first <p> directly inside .prose gets slightly
+   larger muted treatment to ease into the prose body.             */
+.prose>p:first-of-type {
+    font-size: var(--text-md);
+    color: var(--color-muted);
+}
+
+/* ── Links ───────────────────────────────────────────────── */
+.prose a:not([aria-hidden="true"]) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+
+.prose a:not([aria-hidden="true"]):hover {
+    color: var(--color-fg);
+    text-decoration-color: var(--color-border);
+}
+
+.prose a:not([aria-hidden="true"]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prose a:not([aria-hidden="true"]) {
+        transition: none;
+    }
+}
+
+/* ── Strong and emphasis ─────────────────────────────────── */
+.prose strong {
+    font-weight: 600;
+    color: var(--color-fg);
+}
+
+.prose em {
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+/* ── Lists ───────────────────────────────────────────────── */
+.prose ul,
+.prose ol {
+    padding-left: 1.5rem;
+    line-height: var(--leading-relaxed);
+}
+
+.prose ul {
+    list-style-type: disc;
+}
+
+.prose ol {
+    list-style-type: decimal;
+}
+
+.prose li {
+    margin-bottom: 0.375em;
+}
+
+.prose li>ul,
+.prose li>ol {
+    margin-top: 0.375em;
+    margin-bottom: 0;
+}
+
+/* ── Blockquote ──────────────────────────────────────────── */
+/* Accent left border mirrors the highlighted-line treatment in
+   the code block system — a consistent visual language.           */
+.prose blockquote {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.25rem;
+    margin-left: 0;
+    margin-right: 0;
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+.prose blockquote>p:first-of-type {
+    font-size: var(--text-base);
+    color: var(--color-muted);
+}
+
+/* ── Horizontal rule ─────────────────────────────────────── */
+.prose hr {
+    border: none;
+    border-top: 1px solid var(--color-border-sub);
+    margin-top: 2.5em;
+    margin-bottom: 2.5em;
+}
+
+/* ── Tables ──────────────────────────────────────────────── */
+/* GFM tables — enabled by remark-gfm. Required for the bookkeeping
+   and CGPA posts.                                                  */
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    /* Horizontal scroll on narrow viewports — preserves layout */
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.prose thead {
+    background-color: var(--color-surface-2);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.prose th {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0.625rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.prose td {
+    padding: 0.625rem 1rem;
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--color-border-sub);
+    vertical-align: top;
+}
+
+.prose tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.prose tbody tr:hover td {
+    background-color: var(--color-surface-2);
+}
+
+/* ── Images ──────────────────────────────────────────────── */
+.prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-sub);
+    display: block;
+}
+
+/* ── Code ────────────────────────────────────────────────── */
+/* Fenced blocks and inline code are governed by the Shiki
+   integration in themes.css — not redeclared here.
+   The only prose-specific rule: flush <pre> with the column edge
+   and let the adjacent-sibling rhythm handle vertical spacing.    */
+.prose pre {
+    margin-left: 0;
+    margin-right: 0;
+}

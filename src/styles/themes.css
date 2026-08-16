@@ -1,0 +1,260 @@
+/* styles/themes.css */
+
+/* ============================================================
+   THEME SYSTEM
+   Default: Dark
+   Override: [data-theme="light"]
+============================================================ */
+
+/* =========================
+   DARK THEME (DEFAULT)
+========================= */
+:root {
+   --color-bg: #0b0b0c;
+   --color-surface: #111113;
+   --color-surface-2: #18181b;
+   --color-border: #27272a;
+   --color-border-sub: #1c1c1f;
+
+   --color-fg: #f5f5f5;
+   --color-muted: #a1a1aa;
+   --color-faint: #52525b;
+
+   --color-accent: #b5f23d;
+   --color-accent-dim: #8ab82d;
+   --color-accent-bg: rgba(181, 242, 61, 0.08);
+   --color-accent-contrast: #0b0b0c;
+
+   --color-success: #22c55e;
+   --color-warning: #f59e0b;
+   --color-danger: #ef4444;
+   --color-info: #60a5fa;
+
+   --color-success-bg: rgba(34, 197, 94, 0.08);
+   --color-warning-bg: rgba(245, 158, 11, 0.08);
+   --color-danger-bg: rgba(239, 68, 68, 0.08);
+   --color-info-bg: rgba(96, 165, 250, 0.08);
+
+   --ambient-line-opacity: 1;
+   --ambient-glow-opacity: 1;
+   --ambient-vignette-opacity: 1;
+   --ambient-noise-opacity: 1;
+
+
+   /* =========================
+      CODE TOKEN SYSTEM
+      Syntax tokens → Shiki theme objects
+      Block tokens  → CSS selectors below
+   ========================= */
+
+   /* Block tokens */
+   --code-bg: #111113;
+   /* --color-surface */
+   --code-border: #27272a;
+   /* --color-border */
+   --code-padding: 1.25rem 1.5rem;
+   --code-line-highlight: rgba(181, 242, 61, 0.06);
+   /* accent at low opacity */
+   --code-line-highlight-border: #b5f23d;
+   /* --color-accent */
+   --code-line-number: #3f3f46;
+   /* zinc-700 */
+   --code-inline-bg: #18181b;
+   /* --color-surface-2 */
+   --code-inline-text: #b5f23d;
+   /* --color-accent */
+
+   /* Syntax tokens */
+   --code-text: #e4e4e7;
+   /* zinc-200 — softer than --color-fg */
+   --code-comment: #52525b;
+   /* --color-faint — clearly de-emphasized */
+   --code-keyword: #b5f23d;
+   /* --color-accent — control flow pops */
+   --code-string: #86efac;
+   /* green-300 — adjacent to accent */
+   --code-number: #93c5fd;
+   /* blue-300 — clear numeric distinction */
+   --code-function: #c4b5fd;
+   /* violet-300 — callable distinction */
+   --code-operator: #a1a1aa;
+   /* --color-muted — neutral weight */
+   --code-type: #67e8f9;
+   /* cyan-300 — TypeScript type annotations */
+   --code-punctuation: #71717a;
+   /* zinc-500 — structurally present, visually recessed */
+   --code-variable: #e4e4e7;
+   /* matches text — variables need no special signal */
+}
+
+/* =========================
+   LIGHT THEME
+========================= */
+[data-theme="light"] {
+   --color-bg: #f7f8f3;
+   --color-surface: #fffffc;
+   --color-surface-2: #eef2e8;
+   --color-border: #d5ddcd;
+   --color-border-sub: #e4e9df;
+
+   --color-fg: #171a14;
+   --color-muted: #596151;
+   --color-faint: #8a9581;
+
+   --color-accent: #4f7d16;
+   --color-accent-dim: #365f0b;
+   --color-accent-bg: rgba(79, 125, 22, 0.1);
+   --color-accent-contrast: #fffffc;
+
+   --color-success: #16803f;
+   --color-warning: #b45309;
+   --color-danger: #c92a2a;
+   --color-info: #2563eb;
+
+   --color-success-bg: rgba(22, 128, 63, 0.1);
+   --color-warning-bg: rgba(180, 83, 9, 0.1);
+   --color-danger-bg: rgba(201, 42, 42, 0.1);
+   --color-info-bg: rgba(37, 99, 235, 0.1);
+
+   --ambient-line-opacity: 0.7;
+   --ambient-glow-opacity: 0.72;
+   --ambient-vignette-opacity: 0.42;
+   --ambient-noise-opacity: 0.45;
+
+   --shadow-sm: 0 1px 3px rgba(31, 41, 24, 0.08);
+   --shadow-md: 0 10px 28px rgba(31, 41, 24, 0.1);
+   --shadow-lg: 0 18px 52px rgba(31, 41, 24, 0.14);
+   --shadow-glow: 0 0 0 3px rgba(79, 125, 22, 0.12), 0 12px 34px rgba(79, 125, 22, 0.14);
+
+
+   /* =========================
+      CODE TOKEN SYSTEM
+      Syntax tokens → Shiki theme objects
+      Block tokens  → CSS selectors below
+   ========================= */
+
+   /* Block tokens */
+   --code-bg: #eef2e8;
+   /* --color-surface-2 */
+   --code-border: #d5ddcd;
+   /* --color-border */
+   --code-line-highlight: rgba(79, 125, 22, 0.1);
+   /* light lime tint */
+   --code-line-highlight-border: #4f7d16;
+   /* lime-700 */
+   --code-line-number: #aab5a1;
+   /* zinc-300 */
+   --code-inline-bg: #e4e9df;
+   /* --color-border as surface */
+   --code-inline-text: #365f0b;
+   /* lime-800 — dark lime on white */
+
+   /* Syntax tokens */
+   --code-text: #171a14;
+   /* zinc-900 */
+   --code-comment: #8a9581;
+   /* --color-faint in light mode */
+   --code-keyword: #365f0b;
+   /* lime-800 — dark lime, readable on white */
+   --code-string: #15803d;
+   /* green-700 */
+   --code-number: #1d4ed8;
+   /* blue-700 */
+   --code-function: #6d28d9;
+   /* violet-700 */
+   --code-operator: #596151;
+   /* --color-muted in light */
+   --code-type: #0e7490;
+   /* cyan-800 */
+   --code-punctuation: #8a9581;
+   /* muted — same role as dark */
+   --code-variable: #171a14;
+   /* matches text */
+
+   /* --code-padding not redefined — layout is theme-invariant */
+}
+
+/* ============================================================
+   SHIKI INTEGRATION
+   Token spans receive inline CSS custom properties from
+   rehype-pretty-code:
+     style="--shiki-light:#value;--shiki-dark:#value"
+
+   These selectors activate the correct variable set based on
+   the active [data-theme] attribute — the existing theming
+   mechanism. No Shiki preset is adopted — per DEC-011.
+============================================================ */
+
+/* Base: dark theme active by default (matches :root) */
+pre > code span {
+   color: var(--shiki-dark);
+}
+
+/* Light override: swap to light values when theme is light */
+[data-theme="light"] pre > code span {
+   color: var(--shiki-light);
+}
+
+/* ── Code block container ───────────────────────────────── */
+pre {
+   background-color: var(--code-bg);
+   border: 1px solid var(--code-border);
+   border-radius: 8px;
+   padding: var(--code-padding);
+   overflow-x: auto;
+   /* Prevent horizontal scroll from causing layout shift */
+   max-width: 100%;
+}
+
+pre > code {
+   font-family: var(--font-mono);
+   font-size: var(--text-sm);
+   line-height: var(--leading-relaxed);
+   /* Reset any inherited background — keepBackground: false in
+      rehype-pretty-code config means this is always transparent */
+   background: transparent;
+   border: none;
+   padding: 0;
+   /* Prevent double-scrollbar — pre handles the overflow */
+   overflow: visible;
+}
+
+/* ── Highlighted lines ──────────────────────────────────── */
+/* Activated via meta string on fenced blocks: ```js {2,4} */
+[data-highlighted-line] {
+   background-color: var(--code-line-highlight);
+   border-left: 2px solid var(--code-line-highlight-border);
+   /* Negative margins extend the highlight to the block edge.
+      Padding compensates so text alignment is preserved. */
+   padding-left: calc(1.5rem - 2px);
+   margin-left: -1.5rem;
+   padding-right: 1.5rem;
+   margin-right: -1.5rem;
+}
+
+/* ── Line numbers ───────────────────────────────────────── */
+/* Activated via meta string on fenced blocks: ```js showLineNumbers */
+[data-line-number]::before {
+   content: attr(data-line-number);
+   display: inline-block;
+   width: 1.5rem;
+   margin-right: 1.5rem;
+   text-align: right;
+   color: var(--code-line-number);
+   /* Excluded from copy — line numbers are structural metadata */
+   user-select: none;
+}
+
+/* ── Inline code ────────────────────────────────────────── */
+/* :not(pre) > code excludes tokens inside fenced blocks */
+:not(pre) > code {
+   font-family: var(--font-mono);
+   /* em units scale relative to the surrounding text size */
+   font-size: 0.875em;
+   background-color: var(--code-inline-bg);
+   color: var(--code-inline-text);
+   border-radius: 4px;
+   padding: 0.125rem 0.375rem;
+   /* Prevent inline code from forcing line breaks */
+   white-space: nowrap;
+}

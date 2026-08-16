@@ -1,0 +1,11 @@
+/* styles/global.css */
+
+/* ✅ @theme block must land BEFORE Tailwind's own @theme is injected */
+@import "./tokens.css";
+
+@import "tailwindcss";
+
+@import "./themes.css";
+@import "./base.css";
+@import "./utilities.css";
+@import "./animations.css";
