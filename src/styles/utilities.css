@@ -46,6 +46,14 @@
         color: var(--color-muted);
     }
 
+    .text-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        line-height: var(--leading-snug);
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
     .text-balance {
         text-wrap: balance;
     }

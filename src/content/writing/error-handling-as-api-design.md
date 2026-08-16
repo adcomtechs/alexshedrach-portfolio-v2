@@ -1,6 +1,6 @@
 ---
 title: "Error handling is API design"
-summary: "The errors your API surfaces are a contract. Most engineers write them last — which is why most API error contracts are unusable."
+summary: "The errors your API surfaces are a contract. Most engineers write them last which is why most API error contracts are unusable."
 published: "2026-04-22"
 tags: ["Architecture", "Node.js", "Systems Design"]
 ---

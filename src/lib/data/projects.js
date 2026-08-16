@@ -50,19 +50,19 @@ export const PROJECTS = [
     challenges: [
       {
         challenge:
-          "Marketplace cold-start — no contributors without an audience, no audience without content. A launch with an empty catalog would kill adoption before it started.",
+          "Marketplace cold-start: No contributors without an audience, no audience without content. A launch with an empty catalog would kill adoption before it started.",
         resolution:
-          "Seeded 200 documents across high-demand course codes before public launch. Paystack split-payment infrastructure was built before the contributor-facing UI existed — incentive mechanics were live on day one, not promised later.",
+          "Seeded 200 documents across high-demand course codes before public launch. Paystack split-payment infrastructure was built before the contributor-facing UI existed, incentive mechanics were live on day one, not promised later.",
       },
       {
         challenge:
-          "Semantic search had to work on low-resolution scanned PDFs — the primary format Nigerian lecturers distribute handouts in — not clean digital text.",
+          "Semantic search had to work on low-resolution scanned PDFs the primary format Nigerian lecturers distribute handouts in not clean digital text.",
         resolution:
           "OCR extraction runs before embedding generation. pgvector cosine similarity scoring is tolerant of noisy text in a way keyword matching is not — a scanned document with 85% OCR accuracy still returns relevant results.",
       },
       {
         challenge:
-          "Naira-denominated contributor payouts — Paystack's split API had to route earnings automatically at transaction time, not as manual bank transfers.",
+          "Naira-denominated contributor payouts: Paystack's split API had to route earnings automatically at transaction time, not as manual bank transfers.",
         resolution:
           "Split percentages are a first-class field on material records. Platform fee and contributor cut are computed and routed by Paystack at purchase time. No manual payout queue, no admin intervention.",
       },
@@ -82,19 +82,19 @@ export const PROJECTS = [
         "Nigerian university students rely on WhatsApp groups and Telegram channels to share past exam questions and handouts, the most valuable study resources with no organisation, no search, no quality control, and no way for contributors to earn from the knowledge they share. Global platforms like Studocu and CourseHero have no structured support for Nigerian institution-specific course codes, local grading systems, or naira-denominated payments. The most-searched academic resource among Nigerian students is completely unserved by any existing platform.",
 
       constraints:
-        "The marketplace cold-start problem had to be solved before launch, Nigerian students will not upload content to an empty platform. Contributor earnings had to be paid in naira via Paystack, not USD via PayPal, which is unusable for most Nigerian students. Plagiarism detection had to be implemented without licensing Turnitin, which is cost-prohibitive at the target price point. Semantic search had to work on scanned PDF handouts not just clean digital text — because most Nigerian lecture handouts are photographed or low-resolution scans.",
+        "The marketplace cold-start problem had to be solved before launch, Nigerian students will not upload content to an empty platform. Contributor earnings had to be paid in naira via Paystack, not USD via PayPal, which is unusable for most Nigerian students. Plagiarism detection had to be implemented without licensing Turnitin, which is cost-prohibitive at the target price point. Semantic search had to work on scanned PDF handouts not just clean digital text because most Nigerian lecture handouts are photographed or low-resolution scans.",
 
       architecture:
         "Turborepo monorepo managing three Next.js 16 applications (student portal, admin dashboard, contributor portal) and five Node.js (Fastify) services (auth, materials, search, payments, notifications) as independent deployables with their own package.json and build pipelines. PostgreSQL with the pgvector extension for semantic embeddings colocated with relational material metadata. Redis for job queuing, rate limiting, and caching. Paystack split-payment API for contributor revenue sharing. OpenAI embeddings for semantic similarity scoring and automatic subject/course tagging on upload.",
 
       decisions:
-        "Chose a Turborepo monorepo over fully independent service repositories because the team is a solo developer — the coordination overhead of managing five separate repos with separate CI pipelines is not justified at this stage. Chose pgvector over a dedicated vector database (Pinecone, Weaviate) to eliminate a network hop and keep the infrastructure footprint to a single PostgreSQL instance during the build phase.",
+        "Chose a Turborepo monorepo over fully independent service repositories because the team is a solo developer, the coordination overhead of managing five separate repos with separate CI pipelines is not justified at this stage. Chose pgvector over a dedicated vector database (Pinecone, Weaviate) to eliminate a network hop and keep the infrastructure footprint to a single PostgreSQL instance during the build phase.",
 
       tradeoffs:
-        "True microservice independence — where each service owns its own database was evaluated and rejected for v1. Each service currently operates within schema namespaces in one shared PostgreSQL instance. The documented tradeoff: extracting individual services to their own databases later will require schema migration and careful data boundary work. This is an intentional v1 decision, not an oversight.",
+        "True microservice independence where each service owns its own database was evaluated and rejected for v1. Each service currently operates within schema namespaces in one shared PostgreSQL instance. The documented tradeoff: extracting individual services to their own databases later will require schema migration and careful data boundary work. This is an intentional v1 decision, not an oversight.",
 
       outcome:
-        "Semantic search returning relevant results across a 200-document seed set. Paystack contributor split-payment flow fully implemented and tested. Material upload pipeline with automatic tag classification working. Target: private beta with UNN CSC department — 50 early contributors seeding the catalog before public launch.",
+        "Semantic search returning relevant results across a 200-document seed set. Paystack contributor split-payment flow fully implemented and tested. Material upload pipeline with automatic tag classification working. Target: private beta with UNN CSC department, 50 early contributors seeding the catalog before public launch.",
     },
   },
 
@@ -108,7 +108,7 @@ export const PROJECTS = [
     domain: "EdTech / Academic Tools",
 
     description:
-      "CGPA calculator and NUC-compliant transcript generator built specifically for Nigerian university grading structures — not ported from a Western GPA model.",
+      "CGPA calculator and NUC-compliant transcript generator built specifically for Nigerian university grading structures not ported from a Western GPA model.",
 
     constraint:
       "A single calculation engine had to accommodate every Nigerian grading variant 5-point, 4-point, institution-specific mappings without special-casing each university in application logic.",
@@ -141,19 +141,19 @@ export const PROJECTS = [
     challenges: [
       {
         challenge:
-          "A single calculation engine had to handle 5-point and 4-point grading systems — plus institution-specific grade-point mappings — without branching logic per university in the codebase.",
+          "A single calculation engine had to handle 5-point and 4-point grading systems plus institution-specific grade-point mappings without branching logic per university in the codebase.",
         resolution:
-          "Grade scales are stored as configurable database records. The engine reads the scale at runtime — adding a new institution is a data insert, not a code change. No university is special-cased anywhere in the application.",
+          "Grade scales are stored as configurable database records. The engine reads the scale at runtime adding a new institution is a data insert, not a code change. No university is special-cased anywhere in the application.",
       },
       {
         challenge:
-          "Carry-over course rules differ across institutions — some average all attempts, others take the best grade only. The system had to support both without hardcoding either.",
+          "Carry-over course rules differ across institution where some average all attempts, others take the best grade only. The system had to support both without hardcoding either.",
         resolution:
           "Carry-over behaviour is a field on the institution grade scale record. The calculation engine applies the institution's defined rule. Neither policy is a default assumption in the code.",
       },
       {
         challenge:
-          "PDF transcript output had to be pixel-identical across all devices for postgraduate and NYSC submission — browser rendering differences make client-side PDF generation unreliable.",
+          "PDF transcript output had to be pixel-identical across all devices for postgraduate and NYSC submission browser rendering differences make client-side PDF generation unreliable.",
         resolution:
           "Server-side PDF generation via Java and iText 7. Output is deterministic regardless of the student's browser or OS. The format follows NUC layout expectations so the document is accepted by admissions offices without reformatting.",
       },
@@ -232,13 +232,13 @@ export const PROJECTS = [
     challenges: [
       {
         challenge:
-          "Five distinct role scopes — system admin, department admin, head of department, lecturer, student — had to enforce hard data boundaries between departments at the database layer, not just in application code.",
+          "Five distinct role scopes: system admin, department admin, head of department, lecturer, student — had to enforce hard data boundaries between departments at the database layer, not just in application code.",
         resolution:
-          "JWT encodes role and department scope on authentication. Row-level security policies in PostgreSQL enforce departmental data isolation — a lecturer in the Computer Science department cannot read Engineering department records, regardless of what the application layer permits.",
+          "JWT encodes role and department scope on authentication. Row-level security policies in PostgreSQL enforce departmental data isolation a lecturer in the Computer Science department cannot read Engineering department records, regardless of what the application layer permits.",
       },
       {
         challenge:
-          "Carryover course — the concept of a failed or incomplete course carried into the next academic level — does not map to any Western SIS data model and could not be treated as an edge case.",
+          "Carryover course, the concept of a failed or incomplete course carried into the next academic level — does not map to any Western SIS data model and could not be treated as an edge case.",
         resolution:
           "Modelled carryover as a first-class enrollment type with its own status field, GPA calculation rules, and senate report category. The schema reflects Nigerian academic reality from the data layer up.",
       },
@@ -246,7 +246,7 @@ export const PROJECTS = [
         challenge:
           "Module boundaries between the five domain packages (student, department, course, enrollment, grading) had to be enforced at compile time to prevent architectural decay as the codebase grew.",
         resolution:
-          "Java module system enforces package-private boundaries at compile time. Cross-module calls must go through declared public APIs — illegal access fails the build, not just a code review.",
+          "Java module system enforces package-private boundaries at compile time. Cross-module calls must go through declared public APIs illegal access fails the build, not just a code review.",
       },
     ],
 
@@ -264,13 +264,13 @@ export const PROJECTS = [
         "Most Nigerian universities manage student records through a combination of Excel spreadsheets, outdated desktop software, and paper-based processes. Off-the-shelf student information systems from Western vendors are priced for Western institutions, require months of implementation consulting, and do not model Nigerian-specific academic structures out of the box.",
 
       constraints:
-        "The domain model had to reflect the Nigerian academic year structure two semesters per level, four levels per bachelor's programme — and the carryover course system that most Western SIS products treat as an edge case. Role separation had to be granular: system admin, department admin, head of department, lecturer, and student all have different scopes of access. The system had to be multi-departmental from day one with hard data boundaries between departments.",
+        "The domain model had to reflect the Nigerian academic year structure two semesters per level, four levels per bachelor's programme and the carryover course system that most Western SIS products treat as an edge case. Role separation had to be granular: system admin, department admin, head of department, lecturer, and student all have different scopes of access. The system had to be multi-departmental from day one with hard data boundaries between departments.",
 
       architecture:
         "Spring Boot 3 with Java 21, organised as a modular monolith with package-private domain boundaries enforced as separate Java modules. Next.js 16 App Router frontend. PostgreSQL with row-level security policies for departmental data isolation. JWT-based authentication with five distinct role scopes. AttendIQ integrated as a Spring Boot module and Next.js micro-frontend.",
 
       decisions:
-        "Chose a modular monolith over microservices because the domain boundaries were not stable enough to justify independent deployment units. The module boundaries are enforced at compile time via Java module system access rules — inter-module calls must go through declared public APIs, preventing architectural decay.",
+        "Chose a modular monolith over microservices because the domain boundaries were not stable enough to justify independent deployment units. The module boundaries are enforced at compile time via Java module system access rules inter-module calls must go through declared public APIs, preventing architectural decay.",
 
       tradeoffs:
         "A dedicated SIS data schema following IMS Global LIS or Ed-Fi standards was evaluated and rejected as too abstract for the target market. UniCore's schema models Nigerian academic reality directly senate regulations, carryover categorisation, departmental course ownership rather than trying to be internationally generalisable.",
@@ -323,7 +323,7 @@ export const PROJECTS = [
     challenges: [
       {
         challenge:
-          "A valid QR token forwarded over WhatsApp to an absent student must not register their attendance — standard JWT validation cannot enforce this because a valid token remains valid for any holder within its time window.",
+          "A valid QR token forwarded over WhatsApp to an absent student must not register their attendance standard JWT validation cannot enforce this because a valid token remains valid for any holder within its time window.",
         resolution:
           "Each token carries a one-time nonce stored in PostgreSQL. The nonce is consumed atomically on first scan. A PostgreSQL unique constraint on (student_id, lecture_id) provides a database-level backstop — duplicate attendance records are structurally impossible.",
       },
@@ -331,13 +331,13 @@ export const PROJECTS = [
         challenge:
           "300 students scanning within a 15-minute window creates a concentrated write spike at the nonce validation step.",
         resolution:
-          "The unique index on the nonce column means duplicate attempts fail fast without acquiring a row lock. Measured against a concurrent scan simulation — no lock contention observed at the expected peak load.",
+          "The unique index on the nonce column means duplicate attempts fail fast without acquiring a row lock. Measured against a concurrent scan simulation no lock contention observed at the expected peak load.",
       },
       {
         challenge:
           "QR codes had to expire after the attendance window without a background scheduler or database polling job.",
         resolution:
-          "Expiry is encoded as a timestamp in the JWT payload. The backend validates the timestamp on every scan — if the current time exceeds the encoded expiry, the scan is rejected. No scheduler, no polling, no external dependency.",
+          "Expiry is encoded as a timestamp in the JWT payload. The backend validates the timestamp on every scan if the current time exceeds the encoded expiry, the scan is rejected. No scheduler, no polling, no external dependency.",
       },
     ],
 
@@ -506,19 +506,19 @@ export const PROJECTS = [
     challenges: [
       {
         challenge:
-          "Four distinct Nigerian bank statement CSV formats — GTBank, Access, UBA, FirstBank — had to import without requiring the user to pre-process or reformat the file.",
+          "Four distinct Nigerian bank statement CSV formats such as GTBank, Access, UBA, FirstBank had to import without requiring the user to pre-process or reformat the file.",
         resolution:
-          "Each bank's format is detected by column header fingerprinting on import. A parser factory selects the correct parser at runtime. Adding a new bank format is an additive change — existing parsers are not touched.",
+          "Each bank's format is detected by column header fingerprinting on import. A parser factory selects the correct parser at runtime. Adding a new bank format is an additive change existing parsers are not touched.",
       },
       {
         challenge:
-          "Double-entry bookkeeping adds implementation overhead — every transaction requires knowing which accounts are debited and credited, which is not intuitive for a consumer-facing budgeting tool.",
+          "Double-entry bookkeeping adds implementation overhead: Every transaction requires knowing which accounts are debited and credited, which is not intuitive for a consumer-facing budgeting tool.",
         resolution:
-          "A transaction builder abstraction hides the double-entry mechanics from the UI layer. The builder validates that debits equal credits before writing to the ledger — data integrity is enforced structurally, not by the UI.",
+          "A transaction builder abstraction hides the double-entry mechanics from the UI layer. The builder validates that debits equal credits before writing to the ledger data integrity is enforced structurally, not by the UI.",
       },
       {
         challenge:
-          "Naira-to-dollar allocation for domiciliary accounts — the envelope budgeting system had to handle multi-currency without requiring a live forex API integration.",
+          "Naira-to-dollar allocation for domiciliary accounts: The envelope budgeting system had to handle multi-currency without requiring a live forex API integration.",
         resolution:
           "Envelopes are denominated in their account's native currency. Cross-currency budget summaries use a manually-set exchange rate stored on the account record. No live API dependency — the user controls the rate used for their own budget math.",
       },

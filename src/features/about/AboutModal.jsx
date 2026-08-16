@@ -5,23 +5,42 @@
 // Expanded "How I Build" modal — opened when the user clicks the primary CTA
 // in AboutTeaser. Renders the ABOUT_EXTENDED sections from data/about.js.
 //
-// This is the slower, deeper read. The reader actively chose to open this —
-// they are already interested. Give them the full argument without hedging.
+// Client boundary: focus management, keyboard handling, body scroll lock,
+// and the portal itself all require it. Add to the use-client ledger
+// (AI_CONTEXT.md §4) — "AboutModal — modal focus trap, scroll lock, and
+// portal mount" — alongside AboutTeaser's entry. Both are legitimate per
+// DESIGN_SYSTEM.md §6.4's own list: "Body scroll lock and focus management
+// for modal/drawer surfaces."
 //
-// DESIGN:
-//   - Full-screen overlay on mobile, centered modal on desktop (max-w 680px)
-//   - Each ABOUT_EXTENDED section rendered as a headed prose block
-//   - Left accent bar on each section mirrors the AboutTeaser editorial style
-//   - Closes on: Escape key, backdrop click, close button
-//   - Focus trap: focus moves to the modal on open, returns to trigger on close
-//   - aria-modal + role="dialog" for screen reader context
-//
-// DATA: data/about.js → ABOUT_EXTENDED (4 sections)
+// ── Fixes in this pass ──────────────────────────────────────────────────
+//   - Real focus trap. The previous version's header comment claimed one
+//     existed; it didn't — Tab could escape into the page behind the
+//     modal. Tab/Shift+Tab now wrap within the dialog's focusable elements.
+//   - Focus actually returns to the trigger on close. Previously claimed,
+//     not implemented. The element that had focus at open time is now
+//     captured and restored on close.
+//   - Renders through createPortal to document.body instead of inline in
+//     the tree — makes the "avoids stacking context issues" comment in
+//     AboutTeaser actually true instead of aspirational.
+//   - Scroll lock compensates for scrollbar width so the page doesn't
+//     shift when the lock engages/releases.
+//   - Footer link hover converted from onMouseEnter/onMouseLeave to CSS
+//     hover: — same class of bug fixed in TechTicker.jsx.
+//   - Hand-rolled inline SVG arrow replaced with lucide-react's ArrowRight
+//     — lucide is already imported here for the close icon (X); no reason
+//     to hand-roll a second icon system in the same file.
+//   - Inline style micro-copy converted to .text-label + font-display
+//     utility (now registered in tokens.css) + token-backed Tailwind
+//     classes throughout.
 
 import { useEffect, useRef, useCallback } from "react";
-import { X } from "lucide-react";
+import { createPortal } from "react-dom";
+import { X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ABOUT_EXTENDED, ABOUT_INTRO } from "@/lib/data/about";
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 /**
  * AboutModal
@@ -32,23 +51,42 @@ import { ABOUT_EXTENDED, ABOUT_INTRO } from "@/lib/data/about";
 export function AboutModal({ isOpen, onClose }) {
   const dialogRef = useRef(null);
   const closeBtnRef = useRef(null);
+  const triggerRef = useRef(null);
 
-  // ── Focus management ─────────────────────────────────────────────────────
-  // On open: move focus to the close button (first interactive element)
-  // On close: focus returns to whatever triggered the open (handled by browser
-  // since we use a <dialog>-like pattern with returnFocus)
+  // ── Focus management: move in on open, trap while open, restore on close ──
   useEffect(() => {
     if (isOpen) {
-      // Small delay so the transition has started before focus moves
+      triggerRef.current = document.activeElement;
       const t = setTimeout(() => closeBtnRef.current?.focus(), 50);
       return () => clearTimeout(t);
     }
+    triggerRef.current?.focus?.();
+    triggerRef.current = null;
   }, [isOpen]);
 
-  // ── Keyboard: Escape to close ─────────────────────────────────────────────
   const handleKeyDown = useCallback(
     (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll(FOCUSABLE_SELECTOR),
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     },
     [onClose],
   );
@@ -59,92 +97,68 @@ export function AboutModal({ isOpen, onClose }) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, handleKeyDown]);
 
-  // ── Body scroll lock ──────────────────────────────────────────────────────
+  // ── Body scroll lock — compensates for scrollbar width to prevent the
+  //    page shifting when the lock engages/releases. ──────────────────────
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+    if (!isOpen) return;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const prevOverflow = document.body.style.overflow;
+    const prevPaddingRight = document.body.style.paddingRight;
+
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
+
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPaddingRight;
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  return (
-    // ── Overlay ───────────────────────────────────────────────────────────
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-      style={{ background: "rgba(0, 0, 0, 0.75)", backdropFilter: "blur(4px)" }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm md:p-8"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      aria-hidden="false"
     >
-      {/* ── Modal panel ────────────────────────────────────────────────── */}
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="about-modal-heading"
-        className={cn(
-          "relative flex flex-col w-full max-w-[680px] max-h-[90vh]",
-          "rounded-2xl overflow-hidden",
-          "border border-[var(--color-border-sub)]",
-        )}
-        style={{ background: "var(--color-bg)" }}
+        className="relative flex max-h-[90vh] w-full max-w-[680px] flex-col overflow-hidden rounded-2xl border border-(--color-border-sub) bg-(--color-bg)"
       >
-        {/* ── Modal header ───────────────────────────────────────────── */}
-        <div
-          className="flex items-center justify-between px-8 py-5 shrink-0"
-          style={{
-            borderBottom: "1px solid var(--color-border-sub)",
-            background: "var(--color-surface)",
-          }}
-        >
+        {/* ── Header ─────────────────────────────────────────────────── */}
+        <div className="flex shrink-0 items-center justify-between border-b border-(--color-border-sub) bg-(--color-surface) px-8 py-5">
           <div className="flex flex-col gap-0.5">
             <h2
               id="about-modal-heading"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-base)",
-                fontWeight: 700,
-                color: "var(--color-fg)",
-                letterSpacing: "var(--tracking-tight)",
-              }}
+              className="text-base font-bold tracking-tight text-(--color-fg)"
+              style={{ fontFamily: "var(--font-display)" }}
             >
               {ABOUT_INTRO.modalButtonLabel}
             </h2>
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-xs)",
-                color: "var(--color-faint)",
-                letterSpacing: "0.06em",
-              }}
-            >
+            <span className="text-label tracking-wide text-(--color-faint)">
               {ABOUT_INTRO.brandHandle}
             </span>
           </div>
 
-          {/* Close button */}
           <button
             ref={closeBtnRef}
+            type="button"
             onClick={onClose}
             aria-label="Close — How I Build"
             className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center",
-              "border border-[var(--color-border)]",
+              "flex h-8 w-8 items-center justify-center rounded-full",
+              "border border-(--color-border) bg-(--color-surface-2) text-(--color-muted)",
               "transition-all duration-150",
-              "hover:border-[var(--color-muted)] hover:text-[var(--color-fg)]",
-              "focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] focus-visible:outline-offset-2",
+              "hover:border-(--color-muted) hover:text-(--color-fg)",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-accent)",
             )}
-            style={{
-              background: "var(--color-surface-2)",
-              color: "var(--color-muted)",
-            }}
           >
             <X size={14} aria-hidden="true" />
           </button>
@@ -155,82 +169,41 @@ export function AboutModal({ isOpen, onClose }) {
           <div className="flex flex-col gap-10">
             {ABOUT_EXTENDED.map((section, i) => (
               <div key={section.id} className="flex flex-col gap-4">
-                {/* Section heading row — number + title */}
                 <div className="flex items-center gap-3">
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-xs)",
-                      color: "var(--color-accent)",
-                      letterSpacing: "0.08em",
-                      fontWeight: 700,
-                    }}
-                  >
+                  <span className="text-label tracking-wide text-(--color-accent) font-bold">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "var(--text-base)",
-                      fontWeight: 700,
-                      color: "var(--color-fg)",
-                      letterSpacing: "var(--tracking-tight)",
-                    }}
+                    className="text-base font-bold tracking-tight text-(--color-fg)"
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     {section.heading}
                   </h3>
                 </div>
 
-                {/* Content block — left accent bar + prose */}
                 <div className="flex items-start gap-4">
                   <div
                     aria-hidden="true"
-                    className="w-[2px] self-stretch rounded-full shrink-0 mt-1"
-                    style={{ background: "var(--color-border-sub)" }}
+                    className="mt-1 w-[2px] shrink-0 self-stretch rounded-full bg-(--color-border-sub)"
                   />
-                  <p
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      color: "var(--color-muted)",
-                      lineHeight: "var(--leading-relaxed)",
-                    }}
-                  >
+                  <p className="text-sm leading-relaxed text-(--color-muted)">
                     {section.content}
                   </p>
                 </div>
 
-                {/* Divider — not rendered after last section */}
                 {i < ABOUT_EXTENDED.length - 1 && (
-                  <div
-                    aria-hidden="true"
-                    className="h-px w-full mt-2"
-                    style={{ background: "var(--color-border-sub)" }}
-                  />
+                  <div aria-hidden="true" className="mt-2 h-px w-full bg-(--color-border-sub)" />
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── Modal footer — links out ──────────────────────────────── */}
-        <div
-          className="flex items-center justify-between gap-4 px-8 py-5 shrink-0 flex-wrap"
-          style={{
-            borderTop: "1px solid var(--color-border-sub)",
-            background: "var(--color-surface)",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-faint)",
-              letterSpacing: "0.04em",
-            }}
-          >
+        {/* ── Footer ─────────────────────────────────────────────────── */}
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-4 border-t border-(--color-border-sub) bg-(--color-surface) px-8 py-5">
+          <span className="text-label tracking-wide text-(--color-faint)">
             {ABOUT_EXTENDED.length} sections ·{" "}
-            <span style={{ color: "var(--color-accent)" }}>
+            <span className="text-(--color-accent)">
               {ABOUT_INTRO.brandHandle.split(" · ")[1]}
             </span>
           </span>
@@ -238,41 +211,14 @@ export function AboutModal({ isOpen, onClose }) {
           <a
             href="/about"
             onClick={onClose}
-            className="inline-flex items-center gap-1.5 transition-colors duration-150"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-faint)",
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "var(--color-accent)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "var(--color-faint)";
-            }}
+            className="text-label inline-flex items-center gap-1.5 tracking-wide text-(--color-faint) no-underline transition-colors duration-150 hover:text-(--color-accent)"
           >
             {ABOUT_INTRO.fullPageLabel}
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 10 10"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M1 5h8M5.5 1.5L9 5l-3.5 3.5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ArrowRight size={10} aria-hidden="true" />
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

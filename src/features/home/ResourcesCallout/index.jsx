@@ -88,7 +88,7 @@ const RESOURCE_CATEGORIES = [
     icon: Code2,
     label: "Full-Stack Patterns",
     description:
-      "Spring Boot 3 + Java 21 + Next.js 16 + TypeScript + PostgreSQL — " +
+      "Spring Boot 3 + Java 21 + Next.js 16 + TypeScript + PostgreSQL " +
       "the specific configurations, integration approaches, and project " +
       "structures from the Adcomtechs codebase. Not generic guides. Actual patterns.",
     // Mid amber-lime — gradient midpoint, warm-to-cool transition
@@ -159,7 +159,7 @@ function CalloutBackground() {
 
       {/* Top accent bar — gradient, full width */}
       <div
-        className="absolute top-0 left-0 right-0 h-[2px]"
+        className="absolute top-0 left-0 right-0 h-0.5"
         style={{
           background:
             "linear-gradient(90deg, #f59e0b 0%, #b5f23d 55%, transparent 100%)",
@@ -190,12 +190,12 @@ function CategoryCard({ category }) {
       className={cn(
         "group/card flex items-start gap-3.5",
         "rounded-xl p-4",
-        "border border-[var(--color-border-sub)]",
-        "bg-[var(--color-surface)]",
+        "border border-(--color-border-sub)",
+        "bg-(--color-surface)",
         "transition-[border-color,background,transform] duration-200",
-        "hover:bg-[var(--color-surface-2)]",
+        "hover:bg-(--color-surface-2)",
         "hover:-translate-y-0.5",
-        "hover:border-[var(--color-border)]",
+        "hover:border-(--color-border)",
         "cursor-default",
       )}
     >
@@ -242,7 +242,7 @@ function GradientCTA({ href, label }) {
         "hover:shadow-[0_0_28px_rgba(245,158,11,0.2)]",
         "focus-visible:outline-none focus-visible:ring-2",
         "focus-visible:ring-[#f59e0b] focus-visible:ring-offset-2",
-        "focus-visible:ring-offset-[var(--color-bg)]",
+        "focus-visible:ring-offset-(--color-bg)",
       )}
       style={{
         background: "var(--color-bg)",
@@ -269,7 +269,7 @@ function GradientCTA({ href, label }) {
           color: "var(--color-fg)",
         }}
       >
-        <span className="group-hover/cta:[color:var(--color-bg)]">{label}</span>
+        <span className="group-hover/cta:text-(--color-bg)">{label}</span>
       </span>
 
       {/* Arrow — moves right on hover */}
@@ -277,7 +277,7 @@ function GradientCTA({ href, label }) {
         size={14}
         strokeWidth={2.5}
         aria-hidden="true"
-        className="relative z-10 text-[var(--color-fg)] group-hover/cta:text-[var(--color-bg)] group-hover/cta:translate-x-0.5 transition-[color,transform] duration-200"
+        className="relative z-10 text-(--color-fg) group-hover/cta:text-(--color-bg) group-hover/cta:translate-x-0.5 transition-[color,transform] duration-200"
       />
     </Link>
   );
@@ -312,7 +312,7 @@ function GradientCTA({ href, label }) {
       spacing="md"
       id="resources"
       aria-label="Adcomtechs engineering resources"
-      className="relative border-t border-[var(--color-border-sub)]"
+      className="relative border-t border-(--color-border-sub)"
     >
       <CalloutBackground />
 

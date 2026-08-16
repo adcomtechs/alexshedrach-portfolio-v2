@@ -18,27 +18,32 @@ This project is prepared for Vercel deployment with:
 
 ---
 
+
 ## 2. Required Commands
+
+**Primary local environment: WSL2 (Ubuntu), not native Windows.** Node, pnpm, and the repo itself live inside the Linux filesystem (e.g. `~/projects/alexshedrach-portfolio-v2`) — not under `/mnt/c/`. This matches Vercel's Linux build environment and avoids cross-filesystem I/O overhead during `next dev`.
 
 Use pnpm for deployment parity:
 
-```bash
+​```bash
 pnpm install --frozen-lockfile
 pnpm deploy:check
-```
+​```
 
 `deploy:check` runs:
 
-```bash
+​```bash
 pnpm lint && pnpm build
-```
+​```
 
-If the Windows npm shim blocks execution locally, these direct commands are valid fallbacks:
+### Legacy — native Windows fallback
 
-```bash
+The commands below were required when the project was developed directly on native Windows and the npm shim blocked execution. They are preserved for reference only and should not be needed under WSL2:
+
+​```bash
 .\node_modules\.bin\eslint.CMD
 node .\node_modules\next\dist\bin\next build
-```
+​```
 
 ---
 

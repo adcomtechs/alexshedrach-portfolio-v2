@@ -42,7 +42,7 @@ const initialState = {
 function SuccessState({ onReset }) {
   return (
     <div
-      className="flex flex-col items-center justify-center text-center gap-6 rounded-2xl border p-12 min-h-[520px]"
+      className="flex flex-col items-center justify-center text-center gap-6 rounded-2xl border p-12 min-h-130"
       style={{
         background: "var(--color-surface)",
         borderColor: "rgba(34,197,94,0.2)",
@@ -93,7 +93,7 @@ function SuccessState({ onReset }) {
         >
           Message sent.
         </h3>
-        <Text size="sm" color="muted" className="max-w-[300px] mx-auto">
+        <Text size="sm" color="muted" className="max-w-73 mx-auto">
           It will be read carefully. A response specific to what you asked
           will come within 24 hours.
         </Text>
@@ -117,10 +117,10 @@ function SuccessState({ onReset }) {
         onClick={onReset}
         className={cn(
           "inline-flex items-center gap-1.5 transition-colors duration-150 z-50",
-          "hover:text-[var(--color-accent)]",
+          "hover:text-(--color-accent)",
           "focus-visible:outline-none focus-visible:ring-2",
-          "focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2",
-          "focus-visible:ring-offset-[var(--color-bg)]",
+          "focus-visible:ring-(--color-accent) focus-visible:ring-offset-2",
+          "focus-visible:ring-offset-(--color-bg)",
         )}
         style={{ fontSize: "var(--text-sm)", color: "var(--color-muted)" }}
       >
@@ -277,7 +277,7 @@ export function ContactForm() {
           placeholder="Hi, I'm reaching out about licensing AttendIQ for our institution..."
           defaultValue={values.message ?? ""}
           error={errors.message}
-          hint="Min. 20 characters — give enough context for a useful response."
+          hint="Min. 20 characters give enough context for a useful response."
           disabled={isPending}
         />
 
@@ -308,7 +308,7 @@ export function ContactForm() {
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
-            <Text size="sm" className="text-[var(--color-danger)]">
+            <Text size="sm" className="text-(--color-danger)">
               {errors._form}
             </Text>
           </div>

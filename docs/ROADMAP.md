@@ -106,7 +106,7 @@ No blocking questions remain for the current route set.
 | Scaffold component structure            | `Complete`                          |
 | Configure ESLint + Prettier             | `Complete`                          |
 | Initialize GitHub repository            | `Complete`                          |
-| Connect Vercel deployment               | `Pending — to be implemented later` |
+| Connect Vercel deployment               | `Complete`                          |
 | Create `AI_CONTEXT.md`                  | `Complete`                          |
 | Create `DECISIONS.md`                   | `Complete`                          |
 | Create `PORTFOLIO_V2_SPEC.md`           | `Complete`                          |
@@ -115,7 +115,7 @@ No blocking questions remain for the current route set.
 #### Definition of Done
 
 - [x] Application runs locally without errors
-- [ ] Vercel preview deployment is live
+- [x] Vercel preview deployment is live
 - [x] Folder structure matches spec in `PORTFOLIO_V2_SPEC.md → Section 5`
 - [x] All project intelligence documents are in place
 - [x] No placeholder logic exists in committed code

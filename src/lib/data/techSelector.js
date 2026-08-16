@@ -157,7 +157,7 @@ export const TECH_PROJECTS = {
         strong: "Paystack split-payment contributor flow",
         text:
           "revenue from each material download is split between the platform and " +
-          "the contributing student, paid in naira — not USD PayPal, which is " +
+          "the contributing student, paid in naira not USD PayPal, which is " +
           "unusable for most Nigerian students.",
       },
     ],
@@ -183,11 +183,11 @@ export const TECH_PROJECTS = {
       {
         value: "0",
         label:
-          "Duplicate scan records — enforced at DB unique constraint level",
+          "Duplicate scan records enforced at DB unique constraint level",
       },
       {
         value: "< 15 min",
-        label: "Token validity window per lecture — configurable by lecturer",
+        label: "Token validity window per lecture configurable by lecturer",
       },
     ],
 
@@ -196,7 +196,7 @@ export const TECH_PROJECTS = {
         strong: "Stateful nonce JWT model",
         text:
           "each QR token contains a signed JWT payload plus a single-use nonce " +
-          "stored in PostgreSQL. Stateless JWTs cannot be consumed — the nonce " +
+          "stored in PostgreSQL. Stateless JWTs cannot be consumed the nonce " +
           "is the mechanism that makes every token single-use regardless of " +
           "who holds it.",
       },
@@ -241,7 +241,7 @@ export const TECH_PROJECTS = {
       {
         strong: "IndexedDB offline transaction queue",
         text:
-          "every sale is written to IndexedDB first — regardless of network " +
+          "every sale is written to IndexedDB first regardless of network " +
           "state. A service worker processes the queue in FIFO order on " +
           "reconnect. The POS terminal continues operating through full NEPA " +
           "outages without data loss.",
@@ -251,7 +251,7 @@ export const TECH_PROJECTS = {
         text:
           "each queued transaction carries a UUID generated at creation time. " +
           "The Spring Boot sync endpoint rejects any transaction whose key " +
-          "already exists — preventing duplicate records when the queue is " +
+          "already exists preventing duplicate records when the queue is " +
           "flushed after a long offline period.",
       },
     ],
@@ -276,11 +276,11 @@ export const TECH_PROJECTS = {
     stats: [
       {
         value: "200",
-        label: "Documents in private beta seed set — UNN CSC department",
+        label: "Documents in private beta seed set UNN CSC department",
       },
       {
         value: "< 400ms",
-        label: "Semantic search response — design target, pgvector indexed",
+        label: "Semantic search response design target, pgvector indexed",
       },
     ],
 
@@ -289,7 +289,7 @@ export const TECH_PROJECTS = {
         strong: "pgvector within PostgreSQL",
         text:
           "document embeddings are colocated with relational material metadata " +
-          "in one PostgreSQL instance — no separate vector database, no network " +
+          "in one PostgreSQL instance no separate vector database, no network " +
           "hop between similarity search and metadata retrieval. A deliberate " +
           "decision to keep the infrastructure footprint minimal during beta.",
       },
@@ -298,7 +298,7 @@ export const TECH_PROJECTS = {
         text:
           "when a document is uploaded, an OpenAI embedding classifies and " +
           "assigns subject, course level, institution, and topic tags before " +
-          "the material goes live — reducing the manual tagging burden on " +
+          "the material goes live reducing the manual tagging burden on " +
           "contributors to zero.",
       },
     ],
@@ -347,7 +347,7 @@ export const TESTIMONIALS = {
       // ⚠ PLACEHOLDER — replace with real quote before going live
       quote:
         "The monorepo structure is the clearest Turborepo setup I've seen " +
-        "from a solo developer. Every service boundary is deliberate — " +
+        "from a solo developer. Every service boundary is deliberate " +
         "nothing shares internals it shouldn't.",
       // ⚠ Replace with real name
       name: "— Real Name Here",
@@ -381,7 +381,7 @@ export const TESTIMONIALS = {
       // ⚠ PLACEHOLDER — replace with real quote before going live
       quote:
         "The nonce model is the right call. A stateless JWT forwards too " +
-        "easily — I've seen that exact attack in every university I've " +
+        "easily I've seen that exact attack in every university I've " +
         "taught at. The database constraint as the final guard is correct.",
       // ⚠ Replace with real name
       name: "— Real Name Here",
@@ -396,7 +396,7 @@ export const TESTIMONIALS = {
       // ⚠ PLACEHOLDER — replace with real quote before going live
       quote:
         "The Spring Boot module organisation is cleaner than most final-year " +
-        "projects I've reviewed. Domain language in the class names — " +
+        "projects I've reviewed. Domain language in the class names " +
         "CarryoverCourseResolver, not StatusHandler. That's discipline.",
       // ⚠ Replace with real name
       name: "— Real Name Here",
@@ -477,296 +477,3 @@ export const TESTIMONIALS = {
     },
   ],
 };
-
-// // data/projects-selector.js
-// //
-// // Single data source for the TechSelector section.
-// // Three exports consumed by three separate column components:
-// //
-// //   TECH_CATEGORIES → TechList (left column)
-// //   PROJECTS        → ProjectCardViewport (center column)
-// //   TESTIMONIALS    → TestimonialsColumn (right column)
-// //
-// // Content is designed to fit the panel height without scroll.
-// // Each category has: 4 chips, 2 stats, 2 features, 2 testimonials.
-// // Reducing any of these requires a layout review.
-// //
-// // Color note: the "ai" category uses #c084fc — a one-off not in themes.css.
-// // If --color-ai is added to the token system, update all references here.
-
-// // ── Categories ────────────────────────────────────────────────────────────────
-// //
-// // Drives the left column. Each category maps to a PROJECTS entry and a
-// // TESTIMONIALS entry by id. Adding a category requires both.
-
-// export const TECH_CATEGORIES = [
-//   {
-//     id: "frontend",
-//     label: "Frontend Engineering",
-//     description: "Production interfaces at scale",
-//     color: {
-//       text: "var(--color-accent)",
-//       bg: "var(--color-accent-bg)",
-//       border: "rgba(181,242,61,0.25)",
-//     },
-//     chips: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS"],
-//     thumbBg: "linear-gradient(135deg, #0c1a08 0%, #162a0e 100%)",
-//     thumbGlow: "rgba(181,242,61,0.18)",
-//     thumbLabel: "Marketplace Platform",
-//   },
-//   {
-//     id: "backend",
-//     label: "Backend Systems",
-//     description: "APIs, services, and data layers",
-//     color: {
-//       text: "var(--color-info)",
-//       bg: "rgba(96,165,250,0.08)",
-//       border: "rgba(96,165,250,0.25)",
-//     },
-//     chips: ["Node.js", "Spring Boot", "PostgreSQL", "Redis"],
-//     thumbBg: "linear-gradient(135deg, #080f1f 0%, #0d1628 100%)",
-//     thumbGlow: "rgba(96,165,250,0.18)",
-//     thumbLabel: "Fintech Ledger API",
-//   },
-//   {
-//     id: "infra",
-//     label: "Cloud & Infrastructure",
-//     description: "Deployment, observability, and CI/CD",
-//     color: {
-//       text: "var(--color-warning)",
-//       bg: "rgba(245,158,11,0.08)",
-//       border: "rgba(245,158,11,0.25)",
-//     },
-//     chips: ["Docker", "AWS ECS", "GitHub Actions", "Vercel"],
-//     thumbBg: "linear-gradient(135deg, #1a1000 0%, #251800 100%)",
-//     thumbGlow: "rgba(245,158,11,0.18)",
-//     thumbLabel: "Deploy Pipeline",
-//   },
-//   {
-//     id: "ai",
-//     label: "AI & Integrations",
-//     description: "LLM pipelines and intelligent tooling",
-//     color: {
-//       // One-off — not a design token. Document if added to themes.css.
-//       text: "#c084fc",
-//       bg: "rgba(192,132,252,0.08)",
-//       border: "rgba(192,132,252,0.25)",
-//     },
-//     chips: ["LangChain", "OpenAI API", "Python", "Supabase"],
-//     thumbBg: "linear-gradient(135deg, #120820 0%, #1a0d2e 100%)",
-//     thumbGlow: "rgba(192,132,252,0.18)",
-//     thumbLabel: "RAG Support Agent",
-//   },
-// ];
-
-// // ── Projects ──────────────────────────────────────────────────────────────────
-// //
-// // One project per category. Center column renders the active entry.
-// // Content is deliberately compact — 2 stats, 2 features.
-// // Phase 3 populates href with real project slugs.
-
-// export const TECH_PROJECTS = {
-//   frontend: {
-//     title: "Multi-vendor Marketplace",
-//     subtitle: "E-commerce · West Africa",
-//     badge: {
-//       label: "Live",
-//       color: "var(--color-accent)",
-//       bg: "var(--color-accent-bg)",
-//       border: "rgba(181,242,61,0.3)",
-//     },
-//     stats: [
-//       { value: "40k+", label: "Monthly active users" },
-//       { value: "< 1.2s", label: "First contentful paint" },
-//     ],
-//     features: [
-//       {
-//         strong: "App Router + RSC",
-//         text: "reduced client JS by 60% — faster pages without sacrificing interactivity.",
-//       },
-//       {
-//         strong: "Real-time order tracking",
-//         text: "via WebSocket with optimistic UI updates. Zero page reloads.",
-//       },
-//     ],
-//     href: "/projects/marketplace",
-//   },
-
-//   backend: {
-//     title: "Fintech Ledger API",
-//     subtitle: "Double-entry · Financial infrastructure",
-//     badge: {
-//       label: "Production",
-//       color: "var(--color-info)",
-//       bg: "rgba(96,165,250,0.08)",
-//       border: "rgba(96,165,250,0.3)",
-//     },
-//     stats: [
-//       { value: "99.97%", label: "Uptime over 18 months" },
-//       { value: "< 80ms", label: "P95 transaction latency" },
-//     ],
-//     features: [
-//       {
-//         strong: "Double-entry engine",
-//         text: "with PostgreSQL row-level locking — zero data races across ₦2B+ in volume.",
-//       },
-//       {
-//         strong: "Redis rate limiting",
-//         text: "handling 800 req/s per tenant under sustained load with zero degradation.",
-//       },
-//     ],
-//     href: "/projects/fintech-api",
-//   },
-
-//   infra: {
-//     title: "Multi-tenant Deploy Pipeline",
-//     subtitle: "CI/CD · Zero-downtime releases",
-//     badge: {
-//       label: "Shipped",
-//       color: "var(--color-warning)",
-//       bg: "rgba(245,158,11,0.08)",
-//       border: "rgba(245,158,11,0.3)",
-//     },
-//     stats: [
-//       { value: "< 4 min", label: "Full pipeline to production" },
-//       { value: "0", label: "Rollback incidents in 12 months" },
-//     ],
-//     features: [
-//       {
-//         strong: "Docker multi-stage builds",
-//         text: "cut image size by 74% with layer-optimised caching across all environments.",
-//       },
-//       {
-//         strong: "Blue-green deploys on ECS",
-//         text: "with automated health checks and instant rollback — no downtime windows.",
-//       },
-//     ],
-//     href: "/projects/deployment-pipeline",
-//   },
-
-//   ai: {
-//     title: "RAG-powered Support Agent",
-//     subtitle: "LLM · Enterprise knowledge base",
-//     badge: {
-//       label: "Live",
-//       color: "#c084fc",
-//       bg: "rgba(192,132,252,0.08)",
-//       border: "rgba(192,132,252,0.3)",
-//     },
-//     stats: [
-//       { value: "68%", label: "Ticket deflection rate" },
-//       { value: "< 2s", label: "Median response time" },
-//     ],
-//     features: [
-//       {
-//         strong: "LangChain retrieval pipeline",
-//         text: "over 12,000 support documents with semantic chunking and result re-ranking.",
-//       },
-//       {
-//         strong: "pgvector similarity search",
-//         text: "sub-100ms queries at 50k daily lookups via Supabase vector store.",
-//       },
-//     ],
-//     href: "/projects/rag-agent",
-//   },
-// };
-
-// // ── Testimonials ──────────────────────────────────────────────────────────────
-// //
-// // Two testimonials per category. Right column renders the active set.
-// // Quotes are intentionally short — designed to fit without column scroll.
-// // Names and roles use reasonable anonymisation where privacy requires it.
-
-// export const TESTIMONIALS = {
-//   frontend: [
-//     {
-//       quote:
-//         "The marketplace UI is the most polished product our team has shipped. Users consistently mention how fast and fluid it feels.",
-//       name: "Chidi Okonkwo",
-//       role: "CPO, TradeBase",
-//       initials: "CO",
-//       avatarColor: "var(--color-accent)",
-//       avatarBg: "var(--color-accent-bg)",
-//       avatarBorder: "rgba(181,242,61,0.3)",
-//     },
-//     {
-//       quote:
-//         "Component architecture any senior engineer would be proud to inherit — clean boundaries, zero prop drilling.",
-//       name: "Sade Adeyemi",
-//       role: "Lead Engineer, Konga",
-//       initials: "SA",
-//       avatarColor: "var(--color-accent)",
-//       avatarBg: "var(--color-accent-bg)",
-//       avatarBorder: "rgba(181,242,61,0.3)",
-//     },
-//   ],
-
-//   backend: [
-//     {
-//       quote:
-//         "The ledger has processed ₦2B+ without a single consistency error. That's what real backend engineering looks like.",
-//       name: "Tunde Fashola",
-//       role: "CTO, Fintech Startup",
-//       initials: "TF",
-//       avatarColor: "var(--color-info)",
-//       avatarBg: "rgba(96,165,250,0.08)",
-//       avatarBorder: "rgba(96,165,250,0.3)",
-//     },
-//     {
-//       quote:
-//         "The API schema decisions were unusually thoughtful for a system built under this timeline.",
-//       name: "Amara Nwosu",
-//       role: "Senior Backend Engineer",
-//       initials: "AN",
-//       avatarColor: "var(--color-info)",
-//       avatarBg: "rgba(96,165,250,0.08)",
-//       avatarBorder: "rgba(96,165,250,0.3)",
-//     },
-//   ],
-
-//   infra: [
-//     {
-//       quote:
-//         "Four-minute pipelines felt impossible at our scale. The Docker layer work alone cut build costs by 40%.",
-//       name: "Emeka Eze",
-//       role: "DevOps Lead, Interswitch",
-//       initials: "EE",
-//       avatarColor: "var(--color-warning)",
-//       avatarBg: "rgba(245,158,11,0.08)",
-//       avatarBorder: "rgba(245,158,11,0.3)",
-//     },
-//     {
-//       quote:
-//         "Zero rollback incidents in a year is not luck. The health-check strategy here is textbook-correct.",
-//       name: "Ifunanya Obi",
-//       role: "Platform Engineer",
-//       initials: "IO",
-//       avatarColor: "var(--color-warning)",
-//       avatarBg: "rgba(245,158,11,0.08)",
-//       avatarBorder: "rgba(245,158,11,0.3)",
-//     },
-//   ],
-
-//   ai: [
-//     {
-//       quote:
-//         "68% ticket deflection in week one. We expected 30%. The retrieval pipeline quality was the difference.",
-//       name: "Kelechi Mbah",
-//       role: "Head of Product, SupportAI",
-//       initials: "KM",
-//       avatarColor: "#c084fc",
-//       avatarBg: "rgba(192,132,252,0.08)",
-//       avatarBorder: "rgba(192,132,252,0.3)",
-//     },
-//     {
-//       quote:
-//         "Most LLM integrations I review are prompt-and-pray. This one has a real retrieval architecture behind it.",
-//       name: "Ngozi Ike",
-//       role: "AI Engineer, Zindi",
-//       initials: "NI",
-//       avatarColor: "#c084fc",
-//       avatarBg: "rgba(192,132,252,0.08)",
-//       avatarBorder: "rgba(192,132,252,0.3)",
-//     },
-//   ],
-// };

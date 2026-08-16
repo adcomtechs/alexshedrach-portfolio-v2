@@ -10,12 +10,12 @@ export const LOOKING_FOR = [
   {
     icon: Building2,
     label: "Product licensing for institutions",
-    sub: "UniCore · AttendIQ · GradeForge · VendaCore — schools, polytechnics, retail",
+    sub: "UniCore · AttendIQ · GradeForge · VendaCore schools, polytechnics, retail",
   },
   {
     icon: Code2,
     label: "Custom software development",
-    sub: "Spring Boot + Next.js — Nigerian businesses and funded startups",
+    sub: "Spring Boot + Next.js Nigerian businesses and funded startups",
   },
   {
     icon: Video,

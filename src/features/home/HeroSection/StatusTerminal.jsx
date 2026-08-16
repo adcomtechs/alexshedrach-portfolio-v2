@@ -39,7 +39,7 @@ import {
   GitPullRequest,
 } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import { Text } from "@/components/ui/Text";
+
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
@@ -48,10 +48,36 @@ const GITHUB_URL = "https://github.com/alexshedrach";
 const formatTime = () =>
   new Date().toLocaleTimeString("en-GB", { hour12: false });
 
+// ── Clock store ─────────────────────────────────────────────────────────────
+//
+// useSyncExternalStore requires getSnapshot to be a pure read of an already-
+// resolved value — never a computation. formatTime() previously ran inside
+// getSnapshot itself, so two calls to it within the same commit could
+// disagree (if the second boundary ticked between them), which is exactly
+// what "getSnapshot should be cached" is warning about. Fix: the interval
+// is the only place that computes a new value; getSnapshot just reads it.
+
 const SERVER_CLOCK = "--:--:--";
 
+let cachedClock = SERVER_CLOCK;
+
+function getClockSnapshot() {
+  return cachedClock;
+}
+
+function getServerClockSnapshot() {
+  return SERVER_CLOCK;
+}
+
 function subscribeClock(onStoreChange) {
-  const interval = setInterval(onStoreChange, 1000);
+  cachedClock = formatTime();
+  onStoreChange();
+
+  const interval = setInterval(() => {
+    cachedClock = formatTime();
+    onStoreChange();
+  }, 1000);
+
   return () => clearInterval(interval);
 }
 
@@ -133,7 +159,7 @@ const ACTIVITY = [
  */
 function TerminalTitlebar({ clock, mounted }) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border-sub)] bg-[var(--color-surface-2)]">
+    <div className="flex items-center justify-between px-4 py-3 border-b border-(--color-border-sub) bg-(--color-surface-2)">
       {/* Traffic lights — decorative only */}
       <div className="flex items-center gap-1.5" aria-hidden="true">
         <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
@@ -145,7 +171,7 @@ function TerminalTitlebar({ clock, mounted }) {
       <div className="flex items-center gap-1.5">
         <Terminal
           size={11}
-          className="text-[var(--color-faint)]"
+          className="text-(--color-faint)"
           aria-hidden="true"
         />
         <span
@@ -184,10 +210,10 @@ function TerminalTitlebar({ clock, mounted }) {
  */
 function SystemStatusLine() {
   return (
-    <div className="flex items-center gap-2 px-4 py-2 border-b border-[var(--color-border-sub)]">
+    <div className="flex items-center gap-2 px-4 py-2 border-b border-(--color-border-sub)">
       <Wifi
         size={11}
-        className="text-[var(--color-success)] shrink-0"
+        className="text-(--color-success) shrink-0"
         aria-hidden="true"
       />
       <span
@@ -218,7 +244,7 @@ function ActivityItem({ item }) {
   const { Icon, bg, color, label } = config;
 
   return (
-    <li className="flex items-start gap-3 px-4 py-3 transition-colors duration-150 hover:bg-[var(--color-surface-2)]">
+    <li className="flex items-start gap-3 px-4 py-3 transition-colors duration-150 hover:bg-(--color-surface-2)">
       {/* Type icon */}
       <span
         aria-label={label}
@@ -266,7 +292,7 @@ function ActivityItem({ item }) {
  */
 function TerminalFooter() {
   return (
-    <div className="px-4 py-3 border-t border-[var(--color-border-sub)] bg-[var(--color-surface-2)]">
+    <div className="px-4 py-3 border-t border-(--color-border-sub) bg-(--color-surface-2)">
       <a
         href={GITHUB_URL}
         target="_blank"
@@ -275,13 +301,13 @@ function TerminalFooter() {
         style={{ fontSize: "11px", fontFamily: "var(--font-mono)" }}
         aria-label="View full GitHub activity (opens in new tab)"
       >
-        <span className="text-[var(--color-faint)] group-hover:text-[var(--color-accent)] transition-colors duration-150">
+        <span className="text-(--color-faint) group-hover:text-(--color-accent)transition-colors duration-150">
           View full GitHub activity
         </span>
         <ExternalLink
           size={9}
           aria-hidden="true"
-          className="text-[var(--color-faint)] group-hover:text-[var(--color-accent)] transition-colors duration-150 shrink-0"
+          className="text-(--color-faint) group-hover:text-(--color-accent) transition-colors duration-150 shrink-0"
         />
       </a>
     </div>
@@ -306,7 +332,11 @@ function TerminalFooter() {
  * only for the live clock — not for data fetching.
  */
 export function StatusTerminal({ activity = ACTIVITY }) {
-  const clock = useSyncExternalStore(subscribeClock, formatTime, () => SERVER_CLOCK);
+  const clock = useSyncExternalStore(
+    subscribeClock,
+    getClockSnapshot,
+    getServerClockSnapshot,
+  );
   const mounted = clock !== SERVER_CLOCK;
 
   return (
@@ -314,9 +344,9 @@ export function StatusTerminal({ activity = ACTIVITY }) {
       aria-label="Developer activity feed"
       className={cn(
         "relative flex flex-col h-full rounded-xl overflow-hidden",
-        "border border-[var(--color-border-sub)]",
-        "bg-[var(--color-surface)]",
-        "shadow-[var(--shadow-lg)]",
+        "border border-(--color-border-sub)",
+        "bg-(--color-surface)",
+        "shadow-(--shadow-lg)",
         "animate-slide-up",
       )}
     >
@@ -325,7 +355,7 @@ export function StatusTerminal({ activity = ACTIVITY }) {
 
       {/* Activity log */}
       <ul
-        className="flex flex-col divide-y divide-[var(--color-border-sub)] flex-1"
+        className="flex flex-col divide-y divide-(--color-border-sub) flex-1"
         role="list"
         aria-label="Recent activity"
       >

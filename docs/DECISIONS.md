@@ -157,7 +157,7 @@ Do not modify or delete existing accepted entries.
 | DEC-050 | Architecture          | Dependency selection and pipeline order for writing system                              | Accepted | DECISIONS-PHASE3.5.md |
 | DEC-051 | Design System         | themes.css code token block and Shiki integration — implements DEC-011                  | Accepted | DECISIONS-PHASE3.5.md |
 | DEC-052 | Deployment / Operations | Production deployment contract owned in repo — Vercel config, metadata routes, deterministic build rules | Accepted | DECISIONS-CORE.md     |
-
+| DEC-053 | Deployment / Operations | V1 → V2 hosting cutover — new repo, new Vercel project, domain migrates after validation | Accepted | DECISIONS-CORE.md     |
 ---
 
 ## 6. SectionBackground Variant Map — Full System

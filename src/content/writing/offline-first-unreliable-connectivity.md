@@ -1,6 +1,6 @@
 ---
 title: "Building offline-first apps for unreliable connectivity"
-summary: "Designing for intermittent connectivity is not a fallback mode — it is a different mental model for how state flows through your application."
+summary: "Designing for intermittent connectivity is not a fallback mode it is a different mental model for how state flows through your application."
 published: "2026-04-07"
 tags: ["PWA", "Architecture", "JavaScript", "System Design"]
 ---

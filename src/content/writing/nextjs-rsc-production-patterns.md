@@ -1,6 +1,6 @@
 ---
 title: "React Server Components in production: what actually changed"
-summary: "RSC is not a performance optimization with caveats. It is a different mental model for where computation happens — and the boundary between server and client is more consequential than most guides suggest."
+summary: "RSC is not a performance optimization with caveats. It is a different mental model for where computation happens and the boundary between server and client is more consequential than most guides suggest."
 published: "2026-05-05"
 tags: ["Next.js", "Architecture", "Performance"]
 ---

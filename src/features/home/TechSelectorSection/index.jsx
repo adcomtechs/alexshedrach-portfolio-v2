@@ -23,13 +23,13 @@ export default function TechSelectorSection() {
 
   return (
     <section
-      className="relative border-t border-[var(--color-border-sub)] overflow-hidden"
+      className="relative border-t border-(--color-border-sub) overflow-hidden"
       aria-label="Work by technology domain"
     >
       {/* Ambient glow — decorative, aria-hidden */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[640px] h-[320px] rounded-full"
+        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-160 h-80 rounded-full"
         style={{
           background: "var(--color-accent)",
           opacity: 0.018,
@@ -43,7 +43,7 @@ export default function TechSelectorSection() {
           <SectionHeader
             label="Stack"
             title="Built across the full stack."
-            description="Six products across the JavaScript ecosystem, Java and Spring Boot, offline-first architecture, and semantic AI — built for Nigerian institutions and businesses. Select a domain to explore the decisions."
+            description="Six products across the JavaScript ecosystem, Java and Spring Boot, offline-first architecture, and semantic AI built for Nigerian institutions and businesses. Select a domain to explore the decisions."
             align="center"
           />
         </Container>
@@ -57,7 +57,7 @@ export default function TechSelectorSection() {
         Content in each column is sized to fit without scroll.
       */}
       <div
-        className="border-t border-[var(--color-border-sub)]"
+        className="border-t border-(--color-border-sub)"
         style={{ background: "var(--color-surface)" }}
       >
         {/*
@@ -67,10 +67,10 @@ export default function TechSelectorSection() {
         */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-0">
           <div
-            className="grid items-stretch overflow-hidden rounded-xl border-x border-[var(--color-border-sub)] lg:rounded-none lg:border-x-0 lg:[grid-template-columns:220px_minmax(0,1fr)_264px]"
+            className="grid items-stretch overflow-hidden rounded-xl border-x border-(--color-border-sub) lg:rounded-none lg:border-x-0 lg:grid-cols-[220px_minmax(0,1fr)_264px]"
           >
             {/* Left — category list */}
-            <div className="border-b border-[var(--color-border-sub)] lg:border-b-0 lg:border-r">
+            <div className="border-b border-(--color-border-sub) lg:border-b-0 lg:border-r">
               <TechList activeId={activeId} onActivate={setActiveId} />
             </div>
 
@@ -78,7 +78,7 @@ export default function TechSelectorSection() {
             <ProjectCardViewport activeId={activeId} />
 
             {/* Right — testimonials */}
-            <div className="border-t border-[var(--color-border-sub)] lg:border-l lg:border-t-0">
+            <div className="border-t border-(--color-border-sub) lg:border-l lg:border-t-0">
               <TestimonialsColumn activeId={activeId} />
             </div>
           </div>

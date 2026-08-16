@@ -20,7 +20,6 @@ export const ABOUT_INTRO = {
     "I build software that solves problems the existing tools get wrong.",
 
   // Mono subheading — role + brand, no inflated seniority.
-  // ⚠ Replace "Your Name" with your real name before going live.
   subheading: "Software Engineer · CS Student, UNN · Founder, Adcomtechs",
 
   // Body paragraph — 3 sentences max. Who you are, what you build, what makes it different.
@@ -50,7 +49,6 @@ export const ABOUT_INTRO = {
     "infrastructure actually behaves, not how Western deployment guides assume it should.",
 
   // Signature line — bottom of the editorial column.
-  // ⚠ Replace "Your Full Name" with your real name before going live.
   // Keep Adcomtechs on the second line as the brand anchor.
   name: "Alex Shedrach Uchenna",
   brandHandle: "Adcomtechs · adcomtechs.com",
@@ -62,7 +60,11 @@ export const ABOUT_INTRO = {
   modalButtonLabel: "How I build",
   fullPageLabel: "Full engineering philosophy",
 
-  // Resume — update path to your actual file.
+  // Resume — served from /public, same-origin. See AboutTeaser.jsx for the
+  // download behavior (explicit filename + target="_blank" fallback).
+  // Verify this file actually exists in /public before deploying — a
+  // missing asset here fails silently (a plain anchor click, not a fetch
+  // with error handling) and won't show up in a build or lint pass.
   resumePath: "/adcomtechs_resume.pdf",
   resumeLabel: "Download résumé",
 };

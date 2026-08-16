@@ -70,7 +70,7 @@ export function HeroSection() {
 
         {/* Primary accent glow — top-left, follows cursor at 50% speed */}
         <div
-          className="absolute -top-24 -left-32 w-[600px] h-[600px] rounded-full blur-[120px]"
+          className="absolute -top-24 -left-32 w-150 h-150 rounded-full blur-[120px]"
           style={{
             background: "var(--color-accent)",
             opacity: 0.055,
@@ -82,7 +82,7 @@ export function HeroSection() {
 
         {/* Secondary info glow — bottom-right, counter-parallax at 30% speed */}
         <div
-          className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full blur-[100px]"
+          className="absolute bottom-0 right-0 w-100 h-100 rounded-full blur-[100px]"
           style={{
             background: "var(--color-info)",
             opacity: 0.03,
@@ -126,7 +126,7 @@ export function HeroSection() {
               <Text
                 size="lg"
                 color="muted"
-                className="text-center lg:text-left max-w-[520px] mx-auto lg:mx-0 hero-animate"
+                className="text-center lg:text-left max-w-130 mx-auto lg:mx-0 hero-animate"
                 style={{ animationDelay: "140ms" }}
               >
                 Full-stack engineer specialising in production{" "}
@@ -150,7 +150,7 @@ export function HeroSection() {
               max-w-[520px] caps width on large screens.
               lg:ml-auto pushes the terminal to the right edge of its column.
             */}
-            <div className="relative w-full aspect-[4/4.5] max-w-[520px] mx-auto lg:mx-0 lg:ml-auto">
+            <div className="relative w-full aspect-4/4.5 max-w-130 mx-auto lg:mx-0 lg:ml-auto">
               <StatusTerminal />
             </div>
           </div>

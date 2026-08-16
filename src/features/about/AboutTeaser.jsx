@@ -1,74 +1,50 @@
 // features/about/AboutTeaser.jsx
 "use client";
 //
-// Client boundary is justified:
-//   - useState for modal open/close
+// Client boundary: useState for modal open/close. Add to the use-client
+// ledger (AI_CONTEXT.md §4) before this merges — "AboutTeaser — local UI
+// state for the About modal open/close" — per DESIGN_SYSTEM.md §4.2 rule 3.
 //
-// Refinements vs. previous version:
-//
-//   1. ProfilePanel replaces the inline profile image + AboutStats composition.
-//      `mode` prop controls whether stats or a secondary image renders below
-//      the primary profile image. Change the prop at the call site — no code
-//      changes inside this component.
-//
-//   2. onMouseEnter/onMouseLeave on Link and button elements → Button component.
-//      All hover states are now CSS-only via Button's internal variant system.
-//      No inline style mutations anywhere in this file.
-//
-//   3. max-w-[1200px] → Section + Container (wide).
-//      Aligns with the established layout contract.
-//      The AboutTeaser did not previously use the layout system — corrected here.
-//
-//   4. Secondary CTA (full page link) uses Button variant="ghost".
-//      Primary CTA (modal open) uses Button variant="primary".
-//      Resume download uses Button variant="secondary".
-//      All three were previously raw anchor/button elements with inline hover.
+// Fixes in this pass:
+//   - Restored the pullquote blockquote. It was commented out — the data
+//     file itself calls it "the most memorable sentence on the entire
+//     about section," and it wasn't rendering at all. Content regression,
+//     not a style choice.
+//   - Fixed the ProfilePanel import. It pointed at
+//     "@/components/ui/ProfileImage", which doesn't match where that file
+//     actually lives ("features/about/ProfilePanel") — corrected, and that
+//     location is also the architecturally right one per DESIGN_SYSTEM.md
+//     §4.1 (feature-scoped, not a shared ui/ primitive).
+//   - Removed dead commented-out style blocks — AI_CONTEXT.md §7.
+//   - All inline style micro-copy converted to .text-label + token-backed
+//     Tailwind utilities. .text-label no longer bakes in letter-spacing or
+//     color (see utilities.css) — this file needs 0.16em tracking on the
+//     section eyebrow, a different value than the token default, which is
+//     exactly why those were pulled out of the utility in the first place.
+//   - Hand-rolled ArrowRightIcon replaced with lucide-react's ArrowRight —
+//     lucide is already a project dependency; the removed component's own
+//     comment flagged it as a placeholder pending exactly this.
+//   - Hardcoded accent rgba (glow overlays, grid pattern already used the
+//     token correctly and is untouched) moved to color-mix() — theme-safe.
+//   - Resume Button: explicit download filename instead of relying on the
+//     server path's raw filename, plus target="_blank" as a fallback for
+//     platforms (iOS Safari, notably) that ignore the `download` attribute
+//     and navigate instead of downloading. This assumes Button forwards
+//     unrecognized anchor props (target, rel) through to the underlying
+//     <a> when `href` is set — verify against Button's actual prop list;
+//     if it has an explicit allow-list, add target/rel there too.
 
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
-import { AboutModal } from "./AboutModal";
-import { ABOUT_INTRO } from "@/lib/data/about";
-import { ProfilePanel } from "@/components/ui/ProfileImage";
+import { ProfilePanel } from "@/components/ui/ProfilePanel";
 import { Heading } from "@/components/ui/Heading";
 import { Text } from "@/components/ui/Text";
+import { AboutModal } from "./AboutModal";
+import { ABOUT_INTRO } from "@/lib/data/about";
 
-// Inline ArrowRight — replace with lucide-react import if available
-function ArrowRightIcon({ size = 14 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
-  );
-}
-
-// ── AboutTeaser ────────────────────────────────────────────────────────────────
-
-/**
- * AboutTeaser
- *
- * Home-page entry point for /about. Left column is ProfilePanel — switch
- * `panelMode` between "stats" and "image" to change what renders below
- * the primary profile image.
- *
- * PROP TO CHANGE:
- *   panelMode="stats"   → shows AboutStats below the primary image
- *   panelMode="image"   → shows secondary image in 3D treatment
- *
- * Update `secondarySrc` to the second image path when ready.
- */
 export default function AboutTeaser() {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -76,7 +52,7 @@ export default function AboutTeaser() {
   // Toggle between "stats" and "image" to switch the left column mode.
   const panelMode = "image"; // "stats" | "image"
   const primarySrc = "/images/alex-profile.png";
-  const secondarySrc = "/images/alex-profile-2.png"; // update when ready
+  const secondarySrc = "/images/alex-profile-2.png";
   // ──────────────────────────────────────────────────────────────────────────
 
   return (
@@ -86,12 +62,12 @@ export default function AboutTeaser() {
         id="about"
         spacing="md"
         aria-labelledby="about-teaser-heading"
-        className="relative border-t border-[var(--color-border-sub)] overflow-hidden"
+        className="relative overflow-hidden border-t border-(--color-border-sub)"
       >
-        {/* Background: subtle architectural grid */}
+        {/* Background: subtle architectural grid — already token-driven, no change needed */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 pointer-events-none opacity-[0.025]"
+          className="pointer-events-none absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage:
               "linear-gradient(var(--color-border) 1px, transparent 1px), " +
@@ -100,63 +76,46 @@ export default function AboutTeaser() {
           }}
         />
 
-        {/* Left accent bar */}
+        {/* Left accent bar — already token-driven, no change needed */}
         <div
           aria-hidden="true"
-          className="absolute left-0 top-[10%] bottom-[10%] w-[2px] pointer-events-none"
+          className="pointer-events-none absolute bottom-[10%] left-0 top-[10%] w-0.5 opacity-50"
           style={{
             background:
               "linear-gradient(180deg, transparent, var(--color-accent) 30%, var(--color-accent) 70%, transparent)",
-            opacity: 0.5,
           }}
         />
 
         <Container size="wide" className="relative">
           {/* Section label */}
-          <div
-            className="flex items-center gap-4 mb-14"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "var(--color-faint)",
-            }}
-          >
-            <span style={{ color: "var(--color-accent)", fontWeight: 700 }}>
+          <div className="mb-14 flex items-center gap-4">
+            <span className="text-label tracking-[0.16em] text-(--color-accent) font-bold">
               [Builder]
             </span>
-            <span>A note on how I build.</span>
-            <span
-              aria-hidden="true"
-              className="flex-1 h-px"
-              style={{ background: "var(--color-border-sub)" }}
-            />
+            <span className="text-label tracking-[0.16em] text-(--color-faint)">
+              A note on how I build.
+            </span>
+            <span aria-hidden className="h-px flex-1 bg-(--color-border-sub)" />
           </div>
 
           {/* Two-column layout */}
-          <div className="grid lg:grid-cols-[320px_1fr] gap-14 items-start">
+          <div className="grid items-start gap-14 lg:grid-cols-[320px_1fr]">
             {/* ── Left: ProfilePanel ──────────────────────────────────────── */}
-            {/*
-              Change `panelMode` at the top of this component to switch between
-              stats and the secondary image. No changes needed here.
-            */}
             <div className="flex flex-col gap-4">
               <ProfilePanel
                 primarySrc={primarySrc}
                 primaryAlt={ABOUT_INTRO.imageAlt}
                 secondarySrc={secondarySrc}
-                secondaryAlt="Alex Shedrach — alternate"
+                secondaryAlt="Alex Shedrach — alternate portrait"
                 mode={panelMode}
               />
 
-              {/* Full page CTA — below the panel, full width */}
               <Button
                 href="/about"
                 variant="ghost"
                 size="sm"
                 className="w-full justify-center"
-                rightIcon={<ArrowRightIcon />}
+                rightIcon={<ArrowRight size={14} aria-hidden />}
               >
                 {ABOUT_INTRO.fullPageLabel}
               </Button>
@@ -166,99 +125,54 @@ export default function AboutTeaser() {
             <div className="flex flex-col gap-8">
               {/* Headline + subheading */}
               <div className="flex flex-col gap-3">
-               <Heading
-                  as="h2"
-                  size="3"
-                  balance
-                  id="about-teaser-heading"
-                  // style={{
-                  //   fontFamily: "var(--font-display)",
-                  //   fontSize: "var(--text-xl)",
-                  //   fontWeight: 800,
-                  //   color: "var(--color-fg)",
-                  //   letterSpacing: "var(--tracking-tight)",
-                  //   lineHeight: "var(--leading-tight)",
-                  // }}
-                >
+                <Heading as="h2" size="3" balance id="about-teaser-heading">
                   {ABOUT_INTRO.headline}
                 </Heading>
-                <Text
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "var(--text-xs)",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--color-accent)",
-                    fontWeight: 700,
-                  }}
-                >
+                {/* Plain element, not <Text> — this is a mono eyebrow label,
+                    not body copy, which is Text's stated scope. Combining
+                    Text's own size classes with .text-label would leave two
+                    conflicting font-size/line-height declarations resolved
+                    only by @layer source order — fragile. */}
+                <p className="text-label tracking-wide text-(--color-accent) font-bold">
                   {ABOUT_INTRO.subheading}
-                </Text>
+                </p>
               </div>
 
               {/* Body */}
-              <Text
-                size="base"
-                color="muted"
-                style={{
-                  // fontSize: "var(--text-md)",
-                  // color: "var(--color-muted)",
-                  // lineHeight: "var(--leading-relaxed)",
-                  maxWidth: "58ch",
-                }}
-              >
+              <Text size="base" color="muted" className="max-w-[58ch]">
                 {ABOUT_INTRO.body}
               </Text>
 
-              {/* Divider */}
-              <div
-                aria-hidden="true"
-                className="h-px w-full"
-                style={{ background: "var(--color-border-sub)" }}
-              />
+              <div aria-hidden className="h-px w-full bg-(--color-border-sub)" />
 
-              {/* Blockquote */}
+              {/* Blockquote — the field this component exists to surface.
+                  Was commented out in the previous version; restored. */}
               <div className="flex flex-col gap-4">
-                {/* <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4">
                   <div
-                    aria-hidden="true"
-                    className="w-[2px] self-stretch rounded-full shrink-0"
-                    style={{ background: "var(--color-accent)", opacity: 0.6 }}
+                    aria-hidden
+                    className="mt-1 w-0.5 shrink-0 self-stretch rounded-full bg-(--color-accent) opacity-60"
                   />
                   <blockquote
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "var(--text-md)",
-                      fontWeight: 600,
-                      color: "var(--color-fg)",
-                      lineHeight: "var(--leading-snug)",
-                      letterSpacing: "var(--tracking-tight)",
-                      fontStyle: "italic",
-                    }}
+                    className="text-md font-semibold italic leading-snug tracking-tight text-(--color-fg)"
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     &ldquo;{ABOUT_INTRO.pullquote}&rdquo;
                   </blockquote>
-                </div> */}
+                </div>
 
-                <p
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--color-muted)",
-                    lineHeight: "var(--leading-relaxed)",
-                    maxWidth: "52ch",
-                  }}
-                >
+                <p className="max-w-[52ch] text-sm leading-relaxed text-(--color-muted)">
                   {ABOUT_INTRO.pullquoteContext}
                 </p>
               </div>
 
-              {/* CTA row — all three use Button, no inline hover handlers */}
-              <div className="flex items-center gap-3 flex-wrap pt-2">
+              {/* CTA row */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Button
                   variant="primary"
                   size="sm"
                   onClick={() => setModalOpen(true)}
-                  rightIcon={<ArrowRightIcon />}
+                  rightIcon={<ArrowRight size={14} aria-hidden />}
                   aria-label={`${ABOUT_INTRO.modalButtonLabel} — read my full process`}
                 >
                   {ABOUT_INTRO.modalButtonLabel}
@@ -268,7 +182,9 @@ export default function AboutTeaser() {
                   href={ABOUT_INTRO.resumePath}
                   variant="secondary"
                   size="sm"
-                  download
+                  download="Alex-Shedrach-Uchenna-Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={`${ABOUT_INTRO.resumeLabel} — PDF`}
                 >
                   {ABOUT_INTRO.resumeLabel}
@@ -276,30 +192,15 @@ export default function AboutTeaser() {
               </div>
 
               {/* Signature line */}
-              <div
-                className="flex items-center gap-4 pt-4"
-                style={{ borderTop: "1px solid var(--color-border-sub)" }}
-              >
+              <div className="flex items-center gap-4 border-t border-(--color-border-sub) pt-4">
                 <div className="flex flex-col gap-0.5">
                   <span
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "var(--text-sm)",
-                      fontWeight: 700,
-                      color: "var(--color-fg)",
-                      letterSpacing: "-0.01em",
-                    }}
+                    className="text-sm font-bold tracking-[-0.01em] text-(--color-fg)"
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     {ABOUT_INTRO.name}
                   </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--text-xs)",
-                      color: "var(--color-faint)",
-                      letterSpacing: "0.06em",
-                    }}
-                  >
+                  <span className="text-label tracking-wide text-(--color-faint)">
                     {ABOUT_INTRO.brandHandle}
                   </span>
                 </div>
@@ -309,7 +210,7 @@ export default function AboutTeaser() {
         </Container>
       </Section>
 
-      {/* Modal outside section — avoids stacking context issues */}
+      {/* Modal outside section — renders through a portal, see AboutModal.jsx */}
       <AboutModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );

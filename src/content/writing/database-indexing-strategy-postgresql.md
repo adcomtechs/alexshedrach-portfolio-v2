@@ -1,6 +1,6 @@
 ---
 title: "PostgreSQL indexing strategy: what EXPLAIN ANALYZE is actually telling you"
-summary: "Most PostgreSQL performance problems are indexing problems. Reading EXPLAIN ANALYZE correctly — and knowing which index type to reach for — closes the gap between a query that works and one that scales."
+summary: "Most PostgreSQL performance problems are indexing problems. Reading EXPLAIN ANALYZE correctly and knowing which index type to reach for closes the gap between a query that works and one that scales."
 published: "2026-05-08"
 tags: ["PostgreSQL", "Database", "Performance"]
 ---

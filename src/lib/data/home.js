@@ -37,11 +37,11 @@ export const PRINCIPLES_HOME = [
 
     details:
       "The domain is the stable thing. The framework is the replaceable thing. " +
-      "Architectural decisions come from evidence in the domain — not from " +
+      "Architectural decisions come from evidence in the domain not from " +
       "framework defaults or assumption.",
 
     proof:
-      "GradeForge's Spring Boot service was spec'd from a vanilla JS prototype — " +
+      "GradeForge's Spring Boot service was spec'd from a vanilla JS prototype " +
       "every edge case proven in plain functions before a single Java class was written. " +
       "The prototype became the spec.",
 
@@ -61,7 +61,7 @@ export const PRINCIPLES_HOME = [
     title: "Environment shapes architecture",
 
     summary:
-      "Deployment constraints are first-class architectural inputs — not afterthoughts.",
+      "Deployment constraints are first-class architectural inputs not afterthoughts.",
 
     details:
       "Power reliability, connectivity, payment infrastructure, and device capability " +
@@ -70,7 +70,7 @@ export const PRINCIPLES_HOME = [
 
     proof:
       "VendaCore uses an IndexedDB transaction queue because NEPA outages are a " +
-      "daily operational reality for Nigerian retail — not an edge case to handle later.",
+      "daily operational reality for Nigerian retail not an edge case to handle later.",
 
     tags: ["Context-Aware Design", "Offline-First", "African Market"],
 
@@ -89,7 +89,7 @@ export const PRINCIPLES_HOME = [
 
     details:
       "When a provably correct approach and a convenient approach exist for the same " +
-      "problem, correctness wins — the cost of a wrong answer is paid by real users, " +
+      "problem, correctness wins the cost of a wrong answer is paid by real users, " +
       "not the developer who chose the shortcut.",
 
     proof:
@@ -122,14 +122,14 @@ export const PRINCIPLES_ALL = [
     details:
       "The domain is the stable thing. The framework is the replaceable thing. " +
       "Every project starts with the simplest possible implementation of the core " +
-      "business logic — no framework, no database, no abstractions — until the " +
+      "business logic no framework, no database, no abstractions until the " +
       "domain is understood deeply enough to make architectural decisions from " +
       "evidence, not assumption.",
 
     proof:
       "GradeForge's Spring Boot service was specified entirely from a working vanilla " +
-      "JavaScript prototype. Every edge case — carry-over courses, repeat units, " +
-      "5-point vs 4-point scale variance — was proven in plain functions before a " +
+      "JavaScript prototype. Every edge case carry-over courses, repeat units, " +
+      "5-point vs 4-point scale variance was proven in plain functions before a " +
       "single Java class was written. The prototype became the spec.",
 
     tags: ["Domain Modelling", "Prototype-First", "Architecture", "Systems Thinking"],
@@ -154,13 +154,13 @@ export const PRINCIPLES_ALL = [
       "The constraints of the deployment environment determine system design before " +
       "any framework preference does. Power reliability, network connectivity, payment " +
       "infrastructure, regulatory requirements, and user device capability are " +
-      "architectural facts — not edge cases. Architecture that ignores its environment " +
+      "architectural facts not edge cases. Architecture that ignores its environment " +
       "fails its users.",
 
     proof:
       "VendaCore is offline-first with an IndexedDB transaction queue because NEPA " +
       "outages are a daily operational reality for Nigerian retail. AttendIQ uses " +
-      "naira Paystack payouts — not USD PayPal — because that is what Nigerian " +
+      "naira Paystack payouts not USD PayPal because that is what Nigerian " +
       "contributors can actually receive. GradeForge generates NUC-formatted " +
       "transcripts because that is what Nigerian postgraduate admissions offices accept.",
 
@@ -181,15 +181,15 @@ export const PRINCIPLES_ALL = [
 
     details:
       "When a provably correct approach and a convenient approach exist for the same " +
-      "problem, correctness wins — not because it is elegant, but because the cost of " +
+      "problem, correctness wins not because it is elegant, but because the cost of " +
       "a wrong answer is paid by real users, not by the developer who chose the " +
       "shortcut. Correct systems are cheaper to maintain than convenient ones that " +
       "accumulate silent errors.",
 
     proof:
       "Ledgera implements double-entry bookkeeping rather than a simpler " +
-      "income/expense ledger — the mathematically self-validating model used by " +
-      "every real financial system — because a rounding error in a user's naira " +
+      "income/expense ledger the mathematically self-validating model used by " +
+      "every real financial system because a rounding error in a user's naira " +
       "balance is not acceptable. AttendIQ enforces proxy-attendance prevention via " +
       "single-use cryptographic nonces at the database constraint level, not the " +
       "application layer, because UI controls can be bypassed.",
@@ -207,17 +207,17 @@ export const PRINCIPLES_ALL = [
     title: "Decisions leave artifacts",
 
     summary:
-      "Every significant architectural decision is documented at the moment it is made — not reconstructed later.",
+      "Every significant architectural decision is documented at the moment it is made not reconstructed later.",
 
     details:
       "The reasoning behind a decision and the options rejected matter as much as " +
-      "the option chosen. Future engineers — including future me — deserve to inherit " +
+      "the option chosen. Future engineers including future me deserve to inherit " +
       "context, not just code.",
 
     proof:
       "The choice of modular monolith over microservices in UniCore is documented " +
       "with explicit tradeoffs: deployment simplicity vs. independent scaling, " +
-      "written at the time of the decision — not rationalised after the fact. The " +
+      "written at the time of the decision not rationalised after the fact. The " +
       "same applies to pgvector over Pinecone in ScholarHive, IndexedDB over " +
       "localStorage in VendaCore, and stateful nonce JWT over stateless JWT in AttendIQ.",
 
@@ -239,7 +239,7 @@ export const PRINCIPLES_ALL = [
     details:
       "Readable, maintainable code outlasts clever abstractions every time. Every " +
       "function, module, and domain boundary is named for what it does in the " +
-      "business domain — not what it does technically. The wrong abstraction demands " +
+      "business domain not what it does technically. The wrong abstraction demands " +
       "explanation at every reading.",
 
     proof:
@@ -253,182 +253,6 @@ export const PRINCIPLES_ALL = [
     pullquote: null,
   },
 ];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PRINCIPLES_HOME — Homepage subset (3 cards, compressed for fast comprehension)
-//
-// Descriptions: 1–2 sentences. Principle stated, not explained.
-// Proof: Single named example, one sentence.
-// Full reasoning lives at /about — these are the hooks, not the arguments.
-// ─────────────────────────────────────────────────────────────────────────────
-
-// export const PRINCIPLES_HOME = [
-//   {
-//     id: "domain-first",
-//     icon: Layers,
-//     index: "01",
-//     title: "Domain before framework",
-//     description:
-//       "The domain is the stable thing. The framework is the replaceable thing. " +
-//       "Architectural decisions come from evidence in the domain not from " +
-//       "framework defaults or assumption.",
-//     proof:
-//       "GradeForge's Spring Boot service was spec'd entirely from a vanilla JS " +
-//       "prototype the prototype became the spec.",
-//     tags: ["Domain Modelling", "Prototype-First", "Architecture", "Systems Thinking"],
-//     pullquote:
-//       "I build the domain in the simplest medium available before I touch Spring Boot " +
-//       "or Next.js. If I cannot model it in plain functions, I do not understand it " +
-//       "well enough to design a database schema for it.",
-//   },
-
-//   {
-//     id: "environment",
-//     icon: Eye,
-//     index: "02",
-//     title: "Environment shapes architecture",
-//     description:
-//       "Deployment constraints power reliability, connectivity, payment " +
-//       "infrastructure are first-class architectural inputs, not afterthoughts.",
-//     proof:
-//       "VendaCore uses an IndexedDB transaction queue because NEPA outages are a " +
-//       "daily operational reality for Nigerian retail, not an edge case.",
-//     tags: ["Context-Aware Design", "Offline-First", "African Market"],
-//     pullquote: null,
-//   },
-
-//   {
-//     id: "correctness",
-//     icon: Zap,
-//     index: "03",
-//     title: "Correctness over convenience",
-//     description:
-//       "When a correct approach and a convenient approach exist for the same " +
-//       "problem, correctness wins the cost of a wrong answer is paid by real " +
-//       "users, not the developer who chose the shortcut.",
-//     proof:
-//       "Ledgera implements double-entry bookkeeping because a rounding error in " +
-//       "a user's naira balance is not acceptable.",
-//     tags: ["Engineering Rigour", "Data Integrity", "Correctness"],
-//     pullquote: null,
-//   },
-// ];
-
-// // ─────────────────────────────────────────────────────────────────────────────
-// // PRINCIPLES_ALL — Full set for /about page (5 principles, full reasoning)
-// //
-// // Descriptions: full argument, not just the principle.
-// // Proof: complete evidence with named projects and specific tradeoffs.
-// // HOME principles are redefined here in full — do not spread PRINCIPLES_HOME.
-// // ─────────────────────────────────────────────────────────────────────────────
-
-// export const PRINCIPLES_ALL = [
-//   {
-//     id: "domain-first",
-//     icon: Layers,
-//     index: "01",
-//     title: "Domain before framework",
-//     description:
-//       "The domain is the stable thing. The framework is the replaceable thing. " +
-//       "Every project starts with the simplest possible implementation of the core " +
-//       "business logic no framework, no database, no abstractions until the " +
-//       "domain is understood deeply enough to make architectural decisions from " +
-//       "evidence, not assumption.",
-//     proof:
-//       "GradeForge's Spring Boot service was specified entirely from a working vanilla " +
-//       "JavaScript prototype. Every edge case carry-over courses, repeat units, " +
-//       "5-point vs 4-point scale variance was proven in plain functions before a " +
-//       "single Java class was written. The prototype became the spec.",
-//     tags: ["Domain Modelling", "Prototype-First", "Architecture", "Systems Thinking"],
-//     pullquote:
-//       "I build the domain in the simplest medium available before I touch Spring Boot " +
-//       "or Next.js. If I cannot model it in plain functions, I do not understand it " +
-//       "well enough to design a database schema for it.",
-//   },
-
-//   {
-//     id: "environment",
-//     icon: Eye,
-//     index: "02",
-//     title: "Environment shapes architecture",
-//     description:
-//       "The constraints of the deployment environment are first-class architectural " +
-//       "inputs not afterthoughts. Power reliability, network connectivity, payment " +
-//       "infrastructure, regulatory requirements, and user device capability all " +
-//       "determine system design before any framework preference does. Architecture " +
-//       "that ignores its environment fails its users.",
-//     proof:
-//       "VendaCore is offline-first with an IndexedDB transaction queue because NEPA " +
-//       "outages are a daily operational reality for Nigerian retail. AttendIQ uses " +
-//       "naira Paystack payouts not USD PayPal because that is what Nigerian " +
-//       "contributors can actually receive. GradeForge generates NUC-formatted " +
-//       "transcripts because that is what Nigerian postgraduate admissions offices accept.",
-//     tags: ["Context-Aware Design", "Offline-First", "African Market"],
-//     pullquote: null,
-//   },
-
-//   {
-//     id: "correctness",
-//     icon: Zap,
-//     index: "03",
-//     title: "Correctness over convenience",
-//     description:
-//       "When a provably correct approach and a convenient approach exist for the " +
-//       "same problem, correctness wins not because it is elegant, but because the " +
-//       "cost of a wrong answer is paid by real users, not by the developer who chose " +
-//       "the shortcut. Correct systems are cheaper to maintain than convenient ones " +
-//       "that accumulate silent errors.",
-//     proof:
-//       "Ledgera implements double-entry bookkeeping rather than a simpler " +
-//       "income/expense ledger the mathematically self-validating model used by " +
-//       "every real financial system — because a rounding error in a user's naira " +
-//       "balance is not acceptable. AttendIQ enforces proxy-attendance prevention via " +
-//       "single-use cryptographic nonces at the database constraint level, not the " +
-//       "application layer, because UI controls can be bypassed.",
-//     tags: ["Engineering Rigour", "Data Integrity", "Correctness"],
-//     pullquote: null,
-//   },
-
-//   {
-//     id: "artifacts",
-//     icon: GitBranch,
-//     index: "04",
-//     title: "Decisions leave artifacts",
-//     description:
-//       "Every significant architectural decision is documented at the moment it is " +
-//       "made not reconstructed afterwards from code archaeology. The reasoning " +
-//       "behind a decision and the options rejected matter as much as the option " +
-//       "chosen. Future engineers including future me — deserve to inherit context, " +
-//       "not just code.",
-//     proof:
-//       "The choice of modular monolith over microservices in UniCore is documented " +
-//       "with explicit tradeoffs: deployment simplicity vs. independent scaling, " +
-//       "written at the time of the decision not rationalised after the fact. The " +
-//       "same applies to pgvector over Pinecone in ScholarHive, IndexedDB over " +
-//       "localStorage in VendaCore, and stateful nonce JWT over stateless JWT in AttendIQ.",
-//     tags: ["Documentation", "ADRs", "Architecture", "Engineering Culture"],
-//     pullquote: null,
-//   },
-
-//   {
-//     id: "clarity",
-//     icon: Shield,
-//     index: "05",
-//     title: "Clarity over cleverness",
-//     description:
-//       "Readable, maintainable code outlasts clever abstractions every time. Every " +
-//       "function, module, and domain boundary is named for what it does in the " +
-//       "business domain not what it does technically. Complexity earns its place " +
-//       "with a documented reason, or it does not ship.",
-//     proof:
-//       "Domain language drives naming across every codebase: CgpaCalculationService, " +
-//       "not DataProcessor. EnvelopeBudgetAllocator, not BalanceManager. " +
-//       "CarryoverCourseResolver, not StatusHandler. The business domain is readable " +
-//       "in the code without a separate translation layer in your head.",
-//     tags: ["Code Quality", "Naming", "Domain Language", "Maintainability"],
-//     pullquote: null,
-//   },
-// ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HOME METRICS
@@ -452,13 +276,13 @@ export const HOME_METRICS = [
     value: "6",
     label: "Products in active development",
     trend: "up",
-    context: "EdTech, Fintech, and Retail — all Nigerian market-specific",
+    context: "EdTech, Fintech, and Retail all Nigerian market-specific",
   },
   {
     value: "2",
     label: "Domain models shipped as vanilla JS before any framework",
     trend: "neutral",
-    context: "GradeForge and Ledgera — domain proven, then stack chosen",
+    context: "GradeForge and Ledgera domain proven, then stack chosen",
   },
   {
     value: "6+",
@@ -508,7 +332,7 @@ export const PROOF_HOME_METRICS = [
       "Vanilla JS domain models that became Spring Boot service specifications",
 
     // Context — names the projects and the sequencing decision
-    context: "GradeForge · Ledgera — domain correct before stack was chosen",
+    context: "GradeForge · Ledgera domain correct before stack was chosen",
 
     // Neutral: this is a process fact, not a growing metric
     trend: "neutral",
@@ -527,7 +351,7 @@ export const PROOF_HOME_METRICS = [
 
     // Context — names the institutions and the key architectural decision
     context:
-      "UNN · UNILAG · UI · OAU · NOUN — one configurable engine, zero institution-specific special-casing",
+      "UNN · UNILAG · UI · OAU · NOUN one configurable engine, zero institution-specific special-casing",
 
     // Neutral: the count is stable by design
     trend: "neutral",
@@ -559,11 +383,11 @@ export const PROOF_HOME_METRICS = [
     value: "< 400ms",
 
     // What the number measures — "design target" is part of the label
-    label: "Semantic search response — design target",
+    label: "Semantic search response design target",
 
     // Context — names the technology and the indexing strategy
     context:
-      "ScholarHive · pgvector with OpenAI embeddings, colocated in PostgreSQL — target, not measured production latency",
+      "ScholarHive · pgvector with OpenAI embeddings, colocated in PostgreSQL target, not measured production latency",
 
     // Up: the target is being actively worked toward
     trend: "up",

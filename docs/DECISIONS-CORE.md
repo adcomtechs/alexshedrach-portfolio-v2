@@ -283,6 +283,54 @@ The production contract is:
 
 ---
 
+### DEC-053 — V1 → V2 Hosting Cutover Strategy
+
+**Date:** 2026
+**Status:** `Accepted`
+**Area:** Deployment / Operations
+
+#### Context
+
+Portfolio V2 has no git repository yet. V1 is currently live on Vercel at `alexshedrach.dev` with its own repository. V2 needs to go from local, unversioned code to a production deployment serving the live domain, without an uncontrolled cutover or loss of the V1 engineering record. This decision governs repo strategy, Vercel project strategy, and domain migration — not CI/CD mechanics, which are already covered by DEC-052.
+
+#### Options Considered
+
+| Option                                              | Summary                                                                 |
+| ---------------------------------------------------- | ------------------------------------------------------------------------ |
+| Reuse V1 repo (force-push or history merge)          | Fewer repos to manage; contaminates or discards V1's actual history     |
+| Repoint existing V1 Vercel project at new repo       | Fewer dashboard steps; no rollback path, inherits stale project config  |
+| New repo + new Vercel project, domain migrates last  | More setup steps; clean history, safe rollback, matches DEC-001 intent  |
+
+#### Decision
+
+**V2 gets a new GitHub repository and a new Vercel project.** The domain migrates from the V1 Vercel project to the V2 Vercel project only after the V2 preview build passes the full `DEPLOYMENT.md` §7 checklist. V1's repository is preserved permanently as a read-only archive. V1's Vercel project is kept alive, domain-less, for a defined burn-in period before decommissioning.
+
+Sequence:
+
+1. Initialize a new repo for V2 — no shared history with V1
+2. Create a new Vercel project connected to that repo
+3. Deploy to preview; validate against `DEPLOYMENT.md` §7 Pre-Launch Checklist
+4. Remove `alexshedrach.dev` from the V1 Vercel project; add it to the V2 Vercel project
+5. Keep the V1 Vercel project running, domain-less, for a burn-in window
+6. Decommission the V1 Vercel project after burn-in; rename the V1 repo to signal archive status (e.g. `-v1-archive`) and leave it public/private as-is, read-only
+
+#### Reasoning
+
+- DEC-001 already established V1 as reference-only, not a foundation — reusing its repo or Vercel project for V2 would silently reopen that decision
+- A fresh Vercel project avoids inheriting stale env vars, integrations, and build-cache assumptions from V1
+- Keeping the V1 project alive but domain-less is a zero-cost rollback path during cutover — domain reassignment in Vercel is a dashboard operation, effectively instant, so rollback is equally fast if needed
+- Deleting the V1 repo would contradict DEC-001's stated consequence that V1 history is intentionally preserved, not discarded
+- This is a repeatable pattern — the same sequence applies to any future major version cutover, so it's worth codifying once rather than re-deciding informally
+
+#### Consequences
+
+- ✅ Clean deployment and analytics history for V2 from day one
+- ✅ Safe, fast rollback path during cutover window
+- ✅ V1 preserved as an engineering record, consistent with DEC-001
+- ✅ Pattern is reusable for future major-version cutovers
+- ⚠️ Requires manual domain reassignment step in Vercel dashboard — not automated by DEC-052's repo-owned config
+- ⚠️ V1 Vercel project incurs no meaningful cost but must not be forgotten — set a concrete decommission date, don't leave it indefinitely
+
 ## 2. Proposed Amendments
 
 > No amendments currently proposed.
