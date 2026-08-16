@@ -30,11 +30,15 @@ const themeScript = `
 (function() {
   try {
     var stored = localStorage.getItem('theme');
-    var preferred = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-    if (preferred === 'light') {
+
+    if (stored === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
     }
-  } catch (e) {}
+  } catch (e) {
+    document.documentElement.removeAttribute('data-theme');
+  }
 })();
 `;
 
@@ -123,7 +127,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      data-theme="dark"
+      // data-theme="dark"
       suppressHydrationWarning
     >
       <body
